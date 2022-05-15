@@ -1,0 +1,3 @@
+4.33. Analisando solução para atualização parcial de recursos com PATCH
+
+parei
