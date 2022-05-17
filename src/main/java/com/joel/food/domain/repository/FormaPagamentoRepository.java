@@ -1,17 +1,11 @@
 package com.joel.food.domain.repository;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.joel.food.domain.model.FormaPagamento;
 
-public interface FormaPagamentoRepository {
+public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento, Long>{
 
-	List<FormaPagamento> listar();
-
-	FormaPagamento buscar(Long id);
-
-	FormaPagamento salvar(FormaPagamento formaPagamento);
-
-	void remover(FormaPagamento formaPagamento);
+	
 
 }
