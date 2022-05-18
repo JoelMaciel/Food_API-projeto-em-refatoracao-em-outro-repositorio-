@@ -7,5 +7,6 @@ import com.joel.food.domain.model.Cozinha;
 
 @Repository
 public interface CozinhaRepository extends JpaRepository<Cozinha, Long> {
+	
 
 }
