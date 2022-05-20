@@ -1,1 +1,1 @@
-5.13. Implementando uma consulta simples com Criteria API
+6.4. Mapeando classes incorp oráveis com @Embedded e @Embeddable
