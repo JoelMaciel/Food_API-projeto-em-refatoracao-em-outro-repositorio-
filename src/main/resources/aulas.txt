@@ -1,1 +1,1 @@
-6.4. Mapeando classes incorp oráveis com @Embedded e @Embeddable
+7.6. Adicionando o Flyway no projeto e criando a primeira migração
