@@ -1,1 +1,1 @@
-7.6. Adicionando o Flyway no projeto e criando a primeira migração
+7.12. Desafio: Criando migrações e mapeando as entidades Pedido e ItemPedido
