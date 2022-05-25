@@ -1,1 +1,1 @@
-7.12. Desafio: Criando migrações e mapeando as entidades Pedido e ItemPedido
+8.6. Desafio: refatorando os serviços REST
