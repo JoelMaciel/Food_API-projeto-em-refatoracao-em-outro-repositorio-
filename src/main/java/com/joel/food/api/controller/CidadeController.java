@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.joel.food.domain.exception.EntidadeNaoEncontradaException;
+import com.joel.food.domain.exception.NegocioException;
 import com.joel.food.domain.model.Cidade;
 import com.joel.food.domain.repository.CidadeRepository;
 import com.joel.food.domain.service.CadastroCidadeService;
@@ -53,7 +55,11 @@ public class CidadeController {
 
 		BeanUtils.copyProperties(cidade, cidadeAtual, "id");
 
-		return cadastroCidade.salvar(cidadeAtual);
+		try {
+			return cadastroCidade.salvar(cidadeAtual);
+		} catch (EntidadeNaoEncontradaException e) {
+			throw new NegocioException(e.getMessage());
+		}
 
 	}
 
