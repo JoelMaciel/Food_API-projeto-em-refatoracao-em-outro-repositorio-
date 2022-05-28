@@ -1,1 +1,1 @@
-8.6. Desafio: refatorando os serviços REST
+8.9. Desafio: usando a exception NegocioException
