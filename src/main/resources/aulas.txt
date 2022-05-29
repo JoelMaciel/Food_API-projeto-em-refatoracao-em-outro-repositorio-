@@ -1,1 +1,1 @@
-8.9. Desafio: usando a exception NegocioException
+8.16. Customizando o corpo da resposta padrão de ResponseEntityExceptionHandler

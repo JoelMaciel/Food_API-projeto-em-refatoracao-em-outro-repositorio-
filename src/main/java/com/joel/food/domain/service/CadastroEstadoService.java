@@ -5,6 +5,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.joel.food.domain.exception.EntidadeEmUsoException;
 import com.joel.food.domain.exception.EstadoNaoEncontradoException;
 import com.joel.food.domain.model.Estado;
 import com.joel.food.domain.repository.EstadoRepository;
@@ -31,7 +32,7 @@ public class CadastroEstadoService {
 		} catch (EmptyResultDataAccessException e) {
 			throw new EstadoNaoEncontradoException(estadoId);
 		} catch (DataIntegrityViolationException e) {
-			throw new EstadoNaoEncontradoException(String.format(MSG_ESTADO_EM_USO, estadoId));
+			throw new EntidadeEmUsoException(String.format(MSG_ESTADO_EM_USO, estadoId));
 		}
 
 	}
