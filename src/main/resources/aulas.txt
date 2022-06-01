@@ -1,1 +1,1 @@
-8.22. Habilitando erros na desserialização de propriedades inexistentes ou ignoradas
+8.28. Estendendo o formato do problema para adicionar novas propriedades
