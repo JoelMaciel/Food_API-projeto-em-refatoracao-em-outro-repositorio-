@@ -1,1 +1,1 @@
-9.8. Convertendo grupos de constraints para validação em cascata com @ConvertGroup
+9.13. Resolvendo mensagens de validação com Resource Bundle do Bean Validation

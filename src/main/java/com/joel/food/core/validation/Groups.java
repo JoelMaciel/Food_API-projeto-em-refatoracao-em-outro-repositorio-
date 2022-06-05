@@ -1,4 +1,4 @@
-package com.joel.food;
+package com.joel.food.core.validation;
 
 public interface Groups {
 
