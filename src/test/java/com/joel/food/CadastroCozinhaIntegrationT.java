@@ -1,6 +1,7 @@
 package com.joel.food;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
@@ -16,6 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.joel.food.domain.model.Cozinha;
 import com.joel.food.domain.repository.CozinhaRepository;
 import com.joel.food.util.DatabaseCleaner;
+import com.joel.food.util.ResourceUtils;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -27,6 +29,11 @@ class CadastroCozinhaIntegrationT {
 
 	@LocalServerPort
 	private int port;
+	private static final int COZINHA_ID_INEXISTENTE = 100;
+
+	private Cozinha cozinhaAmericana;
+	private int quantidadeCozinhasCadastradas;
+	private String jsonCorretoCozinhaChinesa;
 	
 	@Autowired
 	private DatabaseCleaner databaseCleaner;
@@ -41,6 +48,8 @@ class CadastroCozinhaIntegrationT {
 		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 		RestAssured.port = port;
 		RestAssured.basePath = "/cozinhas";
+		jsonCorretoCozinhaChinesa = ResourceUtils.getContentFromResource(
+				"/json/correto/cozinha-chinesa.json");
 		
 		databaseCleaner.clearTables();
 		prepararDados();
@@ -60,21 +69,21 @@ class CadastroCozinhaIntegrationT {
 	}
 
 	@Test
-	public void deveConter2Cozinhas_QuandoConsultarCozinhas() {
+	public void deveRetornarQuantidadeCorretaDeCozinhas_QuandoConsultarCozinhas() {
 
 		given()
 		.accept(ContentType.JSON)
 		.when()
 		.get()
 		.then()
-		.body("", Matchers.hasSize(2));
+		.body("", Matchers.hasSize(quantidadeCozinhasCadastradas));
 				
 	}
 	
 	@Test
 	public void deveRetornarStatus201_QuandoCadastrarCozinha() {
 		given()
-		.body("{ \"nome\": \"Chinesa\"}")
+		.body(jsonCorretoCozinhaChinesa)
 		.contentType(ContentType.JSON)
 		.accept(ContentType.JSON)
 		.when()
@@ -82,16 +91,46 @@ class CadastroCozinhaIntegrationT {
 		.then()
 		 .statusCode(HttpStatus.SC_CREATED);
 }
+	@Test
+	public void deveRetornarRespostaEStatusCorretos_QuandoConsultarCozinhaExistente() {
+
+		given()
+        .pathParam("cozinhaId", cozinhaAmericana.getId())
+        .accept(ContentType.JSON)
+    .when()
+        .get("/{cozinhaId}")
+    .then()
+        .statusCode(HttpStatus.SC_OK)
+        .body("nome", equalTo(cozinhaAmericana.getNome()));
+				
+	}
+	@Test
+	public void deveRetornarStatus404_QuandoConsultarCozinhaInexistente() {
+
+		 given()
+	        .pathParam("cozinhaId", COZINHA_ID_INEXISTENTE)
+	        .accept(ContentType.JSON)
+	    .when()
+	        .get("/{cozinhaId}")
+	    .then()
+	        .statusCode(HttpStatus.SC_NOT_FOUND);
+			
+				
+	}
+	
+	
 	
 	private void prepararDados() {
 		
-		Cozinha cozinha1 = new Cozinha();
-		cozinha1.setNome("Tailandeza");
-		cozinhaRepository.save(cozinha1);
-		
-		Cozinha cozinha2 = new Cozinha();
-		cozinha2.setNome("Americana");
-		cozinhaRepository.save(cozinha2);
+		Cozinha cozinhaTailandesa = new Cozinha();
+	    cozinhaTailandesa.setNome("Tailandesa");
+	    cozinhaRepository.save(cozinhaTailandesa);
+
+	    cozinhaAmericana = new Cozinha();
+	    cozinhaAmericana.setNome("Americana");
+	    cozinhaRepository.save(cozinhaAmericana);
+	    
+	    quantidadeCozinhasCadastradas = (int) cozinhaRepository.count();
 
 	}
 //	@Autowired
