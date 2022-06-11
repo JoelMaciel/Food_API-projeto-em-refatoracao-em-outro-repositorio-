@@ -25,7 +25,7 @@ import io.restassured.http.ContentType;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.properties")
-class CadastroCozinhaIntegrationT {
+class CadastroCozinhaIntegrationIT {
 
 	@LocalServerPort
 	private int port;
