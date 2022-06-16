@@ -1,1 +1,1 @@
-10.15. Testando endpoint passando parâmetro de URL
+11.9. Isolando o Domain Model do Representation Model com o padrão DTO

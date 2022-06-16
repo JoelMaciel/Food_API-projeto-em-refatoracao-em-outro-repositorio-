@@ -30,9 +30,9 @@ import io.restassured.http.ContentType;
 @TestPropertySource("/application-test.properties")
 public class CadastroRestauranteIT {
 
-	private static final String VIOLACAO_DE_REGRA_DE_NEGOCIO_PROBLEM_TYPE = "Violação de regra de negócio.";
+	private static final String VIOLACAO_DE_REGRA_DE_NEGOCIO_PROBLEM_TYPE = "Violação de regra de negócio";
 
-	private static final String DADOS_INVALIDOS_PROBLEM_TITLE = "Dados inválidos.";
+	private static final String DADOS_INVALIDOS_PROBLEM_TITLE = "Dados inválidos";
 
 	private static final int RESTAURANTE_ID_INEXISTENTE = 100;
 
