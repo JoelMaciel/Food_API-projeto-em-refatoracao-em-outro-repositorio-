@@ -1,1 +1,1 @@
-11.9. Isolando o Domain Model do Representation Model com o padrão DTO
+11.11. Criando DTOs para entrada de dados na API
