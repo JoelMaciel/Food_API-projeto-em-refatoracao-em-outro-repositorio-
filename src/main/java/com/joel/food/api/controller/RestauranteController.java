@@ -22,7 +22,6 @@ import com.joel.food.api.model.RestauranteModel;
 import com.joel.food.api.model.input.RestauranteInput;
 import com.joel.food.domain.exception.CozinhaNaoEncontradaException;
 import com.joel.food.domain.exception.NegocioException;
-import com.joel.food.domain.model.Cozinha;
 import com.joel.food.domain.model.Restaurante;
 import com.joel.food.domain.repository.RestauranteRepository;
 import com.joel.food.domain.service.CadastroRestauranteService;
