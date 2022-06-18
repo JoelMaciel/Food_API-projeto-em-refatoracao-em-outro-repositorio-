@@ -1,1 +1,1 @@
-11.16. Customizando o mapeamento de propriedades com ModelMapper
+12.3. Modelando conceitos abstratos de negócio e ações não-CRUD como recursos
