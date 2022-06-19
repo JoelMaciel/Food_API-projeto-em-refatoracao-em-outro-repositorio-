@@ -1,1 +1,1 @@
-12.3. Modelando conceitos abstratos de negócio e ações não-CRUD como recursos
+12.6. Adicionando endereço no modelo da representação do recurso de restaurante

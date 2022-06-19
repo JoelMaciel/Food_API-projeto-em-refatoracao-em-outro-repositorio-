@@ -35,15 +35,12 @@ public class RestauranteController {
 
 	@Autowired
 	private CadastroRestauranteService cadastroRestaurante;
-	
+
 	@Autowired
 	private RestauranteModelAssembler restauranteModelAssembler;
-	
+
 	@Autowired
 	private RestauranteInputDisassembler restauranteInputDisassembler;
-	
-	
-	
 
 	@GetMapping
 	public List<RestauranteModel> listar() {
@@ -78,41 +75,26 @@ public class RestauranteController {
 			@RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
 
-			
 			Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
-			
+
 			restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
-
-
 
 			return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restauranteAtual));
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
 	}
-	
+
 	@PutMapping("/{restauranteId}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void ativar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.ativar(restauranteId);
 	}
-	
+
 	@DeleteMapping("/{restauranteId}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void inativar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.inativar(restauranteId);
 	}
-	
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
