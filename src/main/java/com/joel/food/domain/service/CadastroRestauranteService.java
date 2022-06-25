@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.joel.food.domain.exception.RestauranteNaoEncontradoException;
 import com.joel.food.domain.model.Cidade;
 import com.joel.food.domain.model.Cozinha;
+import com.joel.food.domain.model.FormaPagamento;
 import com.joel.food.domain.model.Restaurante;
 import com.joel.food.domain.repository.RestauranteRepository;
 
@@ -18,6 +19,9 @@ public class CadastroRestauranteService {
 
 	@Autowired
 	private CadastroCozinhaService cadastroCozinha;
+	
+	@Autowired
+	private CadastroFormaPagamentoService cadastroFormaPagamento;
 	
     @Autowired
     private CadastroCidadeService cadastroCidade;
@@ -52,6 +56,20 @@ public class CadastroRestauranteService {
 		restauranteAtual.inativar();
 	}
 
+	@Transactional
+	public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+		FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
+		
+		restaurante.removerFormaPagamento(formaPagamento);
+	}
+	@Transactional
+	public void associarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+		FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
+		
+		restaurante.adicionarFormaPagamento(formaPagamento);
+	}
 	
 	
 	
