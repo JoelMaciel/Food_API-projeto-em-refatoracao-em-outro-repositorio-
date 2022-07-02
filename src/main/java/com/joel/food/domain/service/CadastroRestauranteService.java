@@ -19,16 +19,16 @@ public class CadastroRestauranteService {
 
 	@Autowired
 	private CadastroCozinhaService cadastroCozinha;
-	
+
 	@Autowired
 	private CadastroFormaPagamentoService cadastroFormaPagamento;
-	
-    @Autowired
-    private CadastroCidadeService cadastroCidade;
+
+	@Autowired
+	private CadastroCidadeService cadastroCidade;
 
 	public Restaurante buscarOuFalhar(Long restauranteId) {
-		return restauranteRepository.findById(restauranteId).orElseThrow(
-				() -> new RestauranteNaoEncontradoException(restauranteId));
+		return restauranteRepository.findById(restauranteId)
+				.orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
 	}
 
 	@Transactional
@@ -43,13 +43,13 @@ public class CadastroRestauranteService {
 		restaurante.getEndereco().setCidade(cidade);
 		return restauranteRepository.save(restaurante);
 	}
-	
+
 	@Transactional
 	public void ativar(Long restauranteId) {
 		Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
 		restauranteAtual.ativar();
 	}
-	
+
 	@Transactional
 	public void inativar(Long restauranteId) {
 		Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
@@ -60,18 +60,30 @@ public class CadastroRestauranteService {
 	public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
 		Restaurante restaurante = buscarOuFalhar(restauranteId);
 		FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
-		
+
 		restaurante.removerFormaPagamento(formaPagamento);
 	}
+
 	@Transactional
 	public void associarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
 		Restaurante restaurante = buscarOuFalhar(restauranteId);
 		FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
-		
+
 		restaurante.adicionarFormaPagamento(formaPagamento);
 	}
-	
-	
-	
-	
+
+	@Transactional
+	public void abrir(Long restauranteId) {
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+
+		restaurante.abrir();
+	}
+
+	@Transactional
+	public void fehcar(Long restauranteId) {
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+
+		restaurante.fechar();
+	}
+
 }
