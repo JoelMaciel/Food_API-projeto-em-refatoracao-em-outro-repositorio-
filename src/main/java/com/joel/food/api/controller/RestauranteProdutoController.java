@@ -76,7 +76,7 @@ public class RestauranteProdutoController {
 	@PutMapping("/{produtoId}")
 	public ProdutoModel atualizar(@PathVariable Long restauranteId, @PathVariable Long produtoId,
 			@RequestBody @Valid ProdutoInput produtoInput) {
-		Produto produtoAtual = cadastroProduto.buscarOuFalhar(restauranteId, restauranteId);
+		Produto produtoAtual = cadastroProduto.buscarOuFalhar(restauranteId, produtoId);
 		
 		produtoInputDisassembler.copyToDomainObject(produtoInput, produtoAtual);
 		
