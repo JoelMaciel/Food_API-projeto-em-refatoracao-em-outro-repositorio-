@@ -23,6 +23,7 @@ import com.joel.food.api.model.input.RestauranteInput;
 import com.joel.food.domain.exception.CidadeNaoEncontradaException;
 import com.joel.food.domain.exception.CozinhaNaoEncontradaException;
 import com.joel.food.domain.exception.NegocioException;
+import com.joel.food.domain.exception.RestauranteNaoEncontradoException;
 import com.joel.food.domain.model.Restaurante;
 import com.joel.food.domain.repository.RestauranteRepository;
 import com.joel.food.domain.service.CadastroRestauranteService;
@@ -96,6 +97,27 @@ public class RestauranteController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void inativar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.inativar(restauranteId);
+	}
+	
+	@PutMapping("/ativacoes")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void ativarMultiplos(@RequestBody List<Long> restauranteIds) {
+		try {
+			cadastroRestaurante.ativar(restauranteIds);
+			
+		} catch (RestauranteNaoEncontradoException e) {
+			throw new NegocioException(e.getMessage(), e);
+		}
+	}
+	
+	@DeleteMapping("/ativacoes")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void inativarMultiplos(@RequestBody List<Long> restauranteIds) {
+		try {
+			cadastroRestaurante.inativar(restauranteIds);			
+		} catch (RestauranteNaoEncontradoException e) {
+			throw new NegocioException(e.getMessage(), e);
+		}
 	}
 	
 	@PutMapping("/{restauranteId}/abertura")
