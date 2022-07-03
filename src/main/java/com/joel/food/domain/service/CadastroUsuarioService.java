@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.joel.food.domain.exception.NegocioException;
 import com.joel.food.domain.exception.UsuarioNaoEncontradoException;
+import com.joel.food.domain.model.Grupo;
 import com.joel.food.domain.model.Usuario;
 import com.joel.food.domain.repository.UsuarioRepository;
 
@@ -16,6 +17,9 @@ public class CadastroUsuarioService {
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private CadastroGrupoService cadastroGrupo;
 	
 	@Transactional
 	public Usuario salvar(Usuario usuario) {
@@ -39,6 +43,26 @@ public class CadastroUsuarioService {
 			throw new NegocioException("Senha atual nao coincide com a senha do usuário.");
 		}
 		usuario.setSenha(novaSenha);
+	}
+	
+	@Transactional
+	public void desassociarGrupo(Long usuarioId, Long grupoId) {
+		Usuario usuario = buscarOuFalhar(usuarioId);
+		
+		Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
+		
+		usuario.removerGrupo(grupo);
+	}
+	
+	
+	@Transactional
+	public void associarGrupo(Long usuarioId, Long grupoId) {
+		
+		Usuario usuario = buscarOuFalhar(usuarioId);
+		
+		Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
+		
+		usuario.adicionarGrupo(grupo);
 	}
 	
 	public Usuario buscarOuFalhar(Long usuarioId) {
