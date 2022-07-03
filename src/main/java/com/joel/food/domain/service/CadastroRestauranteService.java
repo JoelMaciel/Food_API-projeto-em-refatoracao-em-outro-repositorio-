@@ -9,6 +9,7 @@ import com.joel.food.domain.model.Cidade;
 import com.joel.food.domain.model.Cozinha;
 import com.joel.food.domain.model.FormaPagamento;
 import com.joel.food.domain.model.Restaurante;
+import com.joel.food.domain.model.Usuario;
 import com.joel.food.domain.repository.RestauranteRepository;
 
 @Service
@@ -16,6 +17,9 @@ public class CadastroRestauranteService {
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
+	
+	@Autowired
+	private CadastroUsuarioService cadastroUsuario;
 
 	@Autowired
 	private CadastroCozinhaService cadastroCozinha;
@@ -55,6 +59,15 @@ public class CadastroRestauranteService {
 		Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
 		restauranteAtual.inativar();
 	}
+	
+	@Transactional
+	public void desassociarResponsvel(Long restauranteId, Long usuarioId) {
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+		
+		Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
+		
+		restaurante.removerResponsaveis(usuario);
+	}
 
 	@Transactional
 	public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
@@ -62,6 +75,15 @@ public class CadastroRestauranteService {
 		FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
 
 		restaurante.removerFormaPagamento(formaPagamento);
+	}
+	
+	@Transactional
+	public void associarResponsavel(Long restauranteId, Long usuarioId) {
+		Restaurante restaurante = buscarOuFalhar(restauranteId);
+		
+		Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
+		
+		restaurante.adicionarResponsaveis(usuario);
 	}
 
 	@Transactional
@@ -87,3 +109,14 @@ public class CadastroRestauranteService {
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
