@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.joel.food.api.assembler.PedidoModelAssembler;
+import com.joel.food.api.assembler.PedidoResumoModelAssembler;
 import com.joel.food.api.model.PedidoModel;
+import com.joel.food.api.model.PedidoResumoModel;
 import com.joel.food.domain.model.Pedido;
 import com.joel.food.domain.repository.PedidoRepository;
 import com.joel.food.domain.service.EmissaoPedidoService;
@@ -25,12 +27,15 @@ public class PedidoController {
 	private PedidoModelAssembler pedidoModelAssembler;
 	
 	@Autowired
+	private PedidoResumoModelAssembler pedidoResumoModelAssembler;
+	
+	@Autowired
 	private EmissaoPedidoService emissaoPedido;
 	
 	@GetMapping
-	public List<PedidoModel> listar() {
+	public List<PedidoResumoModel> listar() {
 		List<Pedido> todosPedidos = pedidoRepository.findAll();
-		return pedidoModelAssembler.toCollectionModel(todosPedidos);
+		return pedidoResumoModelAssembler.toCollectionModel(todosPedidos);
 	}
 	
 	@GetMapping("/{pedidoId}")
