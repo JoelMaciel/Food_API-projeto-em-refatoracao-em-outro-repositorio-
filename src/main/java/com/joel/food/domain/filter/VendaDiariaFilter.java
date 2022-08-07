@@ -1,4 +1,4 @@
-package com.joel.food.domain.repository.filter;
+package com.joel.food.domain.filter;
 
 import java.time.OffsetDateTime;
 
@@ -10,15 +10,14 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class PedidoFilter {
+public class VendaDiariaFilter {
 	
-	private Long clienteId;
 	private Long restauranteId;
 	
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private OffsetDateTime dataCriacaoInicio;
 	
-	@DateTimeFormat(iso = ISO.DATE_TIME)
+	@DateTimeFormat(iso =ISO.DATE_TIME)
 	private OffsetDateTime dataCriacaoFim;
 
 }

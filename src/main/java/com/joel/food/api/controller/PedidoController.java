@@ -28,10 +28,10 @@ import com.joel.food.api.model.input.PedidoInput;
 import com.joel.food.core.data.PageableTranslator;
 import com.joel.food.domain.exception.EntidadeNaoEncontradaException;
 import com.joel.food.domain.exception.NegocioException;
+import com.joel.food.domain.filter.PedidoFilter;
 import com.joel.food.domain.model.Pedido;
 import com.joel.food.domain.model.Usuario;
 import com.joel.food.domain.repository.PedidoRepository;
-import com.joel.food.domain.repository.filter.PedidoFilter;
 import com.joel.food.domain.service.EmissaoPedidoService;
 import com.joel.food.infrastructure.repository.spec.PedidoSpecs;
 
