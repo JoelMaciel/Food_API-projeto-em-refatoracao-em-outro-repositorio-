@@ -1,4 +1,4 @@
-package com.joel.food.infrastructure.service;
+package com.joel.food.infrastructure.service.query;
 
 import java.util.ArrayList;
 import java.util.Date;
