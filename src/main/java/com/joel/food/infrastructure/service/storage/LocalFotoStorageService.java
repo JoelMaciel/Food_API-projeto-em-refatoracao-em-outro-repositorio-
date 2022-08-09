@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import com.joel.food.domain.service.FotoStorageService;
 
 @Service
-public class LocalFotoStorageService implements FotoStorageService{
-	
+public class LocalFotoStorageService implements FotoStorageService {
+
 	@Value("${food.storage.local.diretorio-fotos}")
 	private Path direitorioFotos;
 
@@ -20,19 +20,27 @@ public class LocalFotoStorageService implements FotoStorageService{
 	public void armazernar(NovaFoto novaFoto) {
 		try {
 			Path arquivoPath = getArquivoPath(novaFoto.getNomeArquivo());
-		
-			FileCopyUtils.copy(novaFoto.getInputStream(),
-					Files.newOutputStream(arquivoPath));
+
+			FileCopyUtils.copy(novaFoto.getInputStream(), Files.newOutputStream(arquivoPath));
 		} catch (Exception e) {
 			throw new StoreException("Não foi possível armazenar arquivo.", e);
 		}
-		
+
 	}
-	
+
+	@Override
+	public void remover(String nomeArquivo) {
+		try {
+			Path arquivoPath = getArquivoPath(nomeArquivo);
+			Files.deleteIfExists(arquivoPath);
+		} catch (Exception e) {
+			throw new StoreException("Não foi possível excluir o arquivo", e);
+		}
+
+	}
+
 	private Path getArquivoPath(String nomeArquivo) {
 		return direitorioFotos.resolve(Path.of(nomeArquivo));
 	}
-
-	
 
 }
