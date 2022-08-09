@@ -1,6 +1,7 @@
 package com.joel.food.domain.service;
 
 
+import java.io.InputStream;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,17 +10,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.joel.food.domain.model.FotoProduto;
 import com.joel.food.domain.repository.ProdutoRepository;
+import com.joel.food.domain.service.FotoStorageService.NovaFoto;
 
 @Service
 public class CatalogoFotoProdutoService {
 	
 	@Autowired
 	private ProdutoRepository produtoRepository;
+	
+	@Autowired
+	private FotoStorageService fotoStorage;
 
 	@Transactional
-	public FotoProduto salvar(FotoProduto foto) {
+	public FotoProduto salvar(FotoProduto foto, InputStream dadosArquivo) {
 		Long restauranteId = foto.getRestauranteId();
 		Long produtoId = foto.getProduto().getId();
+		String nomeNovoArquivo = fotoStorage.gerarNomeArquivo(foto.getNomeArquivo());
 		
 		Optional<FotoProduto> fotoExistente = produtoRepository
 				.findFotoById(restauranteId, produtoId);
@@ -28,7 +34,17 @@ public class CatalogoFotoProdutoService {
 			produtoRepository.delete(fotoExistente.get());
 		}
 		
-		return produtoRepository.save(foto);
+		foto.setNomeArquivo(nomeNovoArquivo);
+		foto = produtoRepository.save(foto);
+		produtoRepository.flush();
+		
+		NovaFoto novaFoto = NovaFoto.builder()
+				.nomeArquivo(foto.getNomeArquivo())
+				.inputStream(dadosArquivo).build();
+		
+		fotoStorage.armazernar(novaFoto);
+		
+		return foto;
 	}
 }
 
