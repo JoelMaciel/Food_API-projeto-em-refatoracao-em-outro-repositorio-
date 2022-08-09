@@ -1,5 +1,6 @@
 package com.joel.food.infrastructure.service.storage;
 
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -15,6 +16,10 @@ public class LocalFotoStorageService implements FotoStorageService {
 
 	@Value("${food.storage.local.diretorio-fotos}")
 	private Path direitorioFotos;
+
+	private Path getArquivoPath(String nomeArquivo) {
+		return direitorioFotos.resolve(Path.of(nomeArquivo));
+	}
 
 	@Override
 	public void armazernar(NovaFoto novaFoto) {
@@ -39,8 +44,17 @@ public class LocalFotoStorageService implements FotoStorageService {
 
 	}
 
-	private Path getArquivoPath(String nomeArquivo) {
-		return direitorioFotos.resolve(Path.of(nomeArquivo));
+	@Override
+	public InputStream recuperar(String nomeArquivo) {
+		try {
+		Path arquivoPath = getArquivoPath(nomeArquivo);
+			return  Files.newInputStream(arquivoPath);
+		} catch (Exception e) {
+			throw new StoreException("Não foi possível recuperar arquivo.", e);
+		}
 	}
 
 }
+
+
+

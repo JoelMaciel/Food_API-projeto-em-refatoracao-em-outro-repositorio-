@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.joel.food.domain.model.FotoProduto;
 import com.joel.food.domain.repository.ProdutoRepository;
 import com.joel.food.domain.service.FotoStorageService.NovaFoto;
+import com.joel.food.infrastructure.service.storage.FotoProdutoNaoEncontradaException;
 
 @Service
 public class CatalogoFotoProdutoService {
@@ -48,6 +49,11 @@ public class CatalogoFotoProdutoService {
 		fotoStorage.substituir(nomeArquivoExistente, novaFoto);
 		
 		return foto;
+	}
+	
+	public FotoProduto buscarOuFalhar(Long restauranteId, Long produtoId) {
+		return produtoRepository.findFotoById(restauranteId, restauranteId)
+				.orElseThrow(() -> new FotoProdutoNaoEncontradaException(restauranteId, produtoId));
 	}
 }
 
