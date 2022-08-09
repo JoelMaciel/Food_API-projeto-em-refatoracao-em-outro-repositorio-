@@ -52,7 +52,7 @@ public class CatalogoFotoProdutoService {
 	}
 	
 	public FotoProduto buscarOuFalhar(Long restauranteId, Long produtoId) {
-		return produtoRepository.findFotoById(restauranteId, restauranteId)
+		return produtoRepository.findFotoById(restauranteId, produtoId)
 				.orElseThrow(() -> new FotoProdutoNaoEncontradaException(restauranteId, produtoId));
 	}
 }
