@@ -6,19 +6,22 @@ import java.nio.file.Path;
 
 import org.bouncycastle.util.StoreException;
 import org.flywaydb.core.internal.util.FileCopyUtils;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.joel.food.api.storage.StorageProperties;
 import com.joel.food.domain.service.FotoStorageService;
 
 @Service
 public class LocalFotoStorageService implements FotoStorageService {
 
-	@Value("${food.storage.local.diretorio-fotos}")
-	private Path direitorioFotos;
+	
+	@Autowired
+	private StorageProperties storageProperties;
 
 	private Path getArquivoPath(String nomeArquivo) {
-		return direitorioFotos.resolve(Path.of(nomeArquivo));
+		return storageProperties.getLocal().getDiretorioFotos()
+				.resolve(Path.of(nomeArquivo));
 	}
 
 	@Override
