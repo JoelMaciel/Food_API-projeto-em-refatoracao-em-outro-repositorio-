@@ -14,12 +14,15 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>food_api</name>
 	<description>API de delivery de comida</description>
+	
 	<properties>
 		<java.version>17</java.version>
 		<modelmapper.version>3.0.0</modelmapper.version>
 		<squiggly.version>1.3.18</squiggly.version>
 		<jasperreports.version>6.17.0</jasperreports.version>
+		<aws-java-sdk-s3.version>1.11.671</aws-java-sdk-s3.version>
 	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -90,6 +93,11 @@
 			<artifactId>jasperreports-functions</artifactId>
 			<version>${jasperreports.version}</version>
 
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>${aws-java-sdk-s3.version}</version>
 		</dependency>
 	</dependencies>
 

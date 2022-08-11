@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.joel.food.api.storage.StorageProperties;
 import com.joel.food.domain.service.FotoStorageService;
 
-@Service
+//@Service
 public class LocalFotoStorageService implements FotoStorageService {
 
 	
