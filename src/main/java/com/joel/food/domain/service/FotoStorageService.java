@@ -7,17 +7,17 @@ import lombok.Builder;
 import lombok.Getter;
 
 public interface FotoStorageService {
+
+	InputStream recuperar(String nomeArquivo);
 	
-	void armazernar(NovaFoto novaFoto);
+	void armazenar(NovaFoto novaFoto);
 	
 	void remover(String nomeArquivo);
 	
-	InputStream recuperar(String nomeArquivo);
-	
 	default void substituir(String nomeArquivoAntigo, NovaFoto novaFoto) {
-		this.armazernar(novaFoto);
+		this.armazenar(novaFoto);
 		
-		if(nomeArquivoAntigo != null) {
+		if (nomeArquivoAntigo != null) {
 			this.remover(nomeArquivoAntigo);
 		}
 	}
@@ -26,11 +26,14 @@ public interface FotoStorageService {
 		return UUID.randomUUID().toString() + "_" + nomeOriginal;
 	}
 	
-	@Getter
 	@Builder
+	@Getter
 	class NovaFoto {
-		private String nomeArquivo;
+		
+		private String nomeAquivo;
 		private InputStream inputStream;
+		
 	}
-
+	
 }
+
