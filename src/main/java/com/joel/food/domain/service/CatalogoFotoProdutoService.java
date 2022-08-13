@@ -1,6 +1,5 @@
 package com.joel.food.domain.service;
 
-
 import java.io.InputStream;
 import java.util.Optional;
 
@@ -13,45 +12,38 @@ import com.joel.food.domain.repository.ProdutoRepository;
 import com.joel.food.domain.service.FotoStorageService.NovaFoto;
 import com.joel.food.infrastructure.service.storage.FotoProdutoNaoEncontradaException;
 
-
-
-
 @Service
 public class CatalogoFotoProdutoService {
 
 	@Autowired
 	private ProdutoRepository produtoRepository;
-	
+
 	@Autowired
 	private FotoStorageService fotoStorage;
-	
+
 	@Transactional
 	public FotoProduto salvar(FotoProduto foto, InputStream dadosArquivo) {
 		Long restauranteId = foto.getRestauranteId();
 		Long produtoId = foto.getProduto().getId();
 		String nomeNovoArquivo = fotoStorage.gerarNomeArquivo(foto.getNomeArquivo());
 		String nomeArquivoExistente = null;
-		
-		Optional<FotoProduto> fotoExistente = produtoRepository
-				.findFotoById(restauranteId, produtoId);
-		
+
+		Optional<FotoProduto> fotoExistente = produtoRepository.findFotoById(restauranteId, produtoId);
+
 		if (fotoExistente.isPresent()) {
 			nomeArquivoExistente = fotoExistente.get().getNomeArquivo();
 			produtoRepository.delete(fotoExistente.get());
 		}
-		
+
 		foto.setNomeArquivo(nomeNovoArquivo);
-		foto =  produtoRepository.save(foto);
+		foto = produtoRepository.save(foto);
 		produtoRepository.flush();
-		
-		NovaFoto novaFoto = NovaFoto.builder()
-				.nomeArquivo(foto.getNomeArquivo())
-				.contentType(foto.getContentType())
-				.inputStream(dadosArquivo)
-				.build();
+
+		NovaFoto novaFoto = NovaFoto.builder().nomeArquivo(foto.getNomeArquivo()).contentType(foto.getContentType())
+				.inputStream(dadosArquivo).build();
 
 		fotoStorage.substituir(nomeArquivoExistente, novaFoto);
-		
+
 		return foto;
 	}
 
@@ -63,21 +55,11 @@ public class CatalogoFotoProdutoService {
 	@Transactional
 	public void excluir(Long restauranteId, Long produtoId) {
 		FotoProduto foto = buscarOuFalhar(restauranteId, produtoId);
-		
+
 		produtoRepository.delete(foto);
 		produtoRepository.flush();
 
 		fotoStorage.remover(foto.getNomeArquivo());
 	}
-	
+
 }
-
-
-
-
-
-
-
-
-
-

@@ -5,12 +5,11 @@ import java.nio.file.Path;
 
 import org.flywaydb.core.internal.util.FileCopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.joel.food.core.storage.StorageProperties;
 import com.joel.food.domain.service.FotoStorageService;
 
-//@Service
+
 public class LocalFotoStorageService implements FotoStorageService {
 
 	@Autowired
@@ -20,10 +19,11 @@ public class LocalFotoStorageService implements FotoStorageService {
 	public FotoRecuperada recuperar(String nomeArquivo) {
 		try {
 			Path arquivoPath = getArquivoPath(nomeArquivo);
-			
-			FotoRecuperada fotoRecuperada = FotoRecuperada.builder()
-					.inputStream(Files.newInputStream(arquivoPath)).build();
 
+			FotoRecuperada fotoRecuperada = FotoRecuperada.builder()
+					.inputStream(Files.newInputStream(arquivoPath))
+					.build();
+			
 			return fotoRecuperada;
 		} catch (Exception e) {
 			throw new StorageException("Não foi possível recuperar arquivo.", e);
@@ -59,6 +59,7 @@ public class LocalFotoStorageService implements FotoStorageService {
 	}
 
 }
+
 
 
 

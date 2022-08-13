@@ -11,13 +11,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
 public class FotoProduto {
-	
-	
-	@Id
+
 	@EqualsAndHashCode.Include
+	@Id
 	@Column(name = "produto_id")
 	private Long id;
 	
@@ -31,12 +30,12 @@ public class FotoProduto {
 	private Long tamanho;
 	
 	public Long getRestauranteId() {
-		if(getProduto() != null) {
+		if (getProduto() != null) {
 			return getProduto().getRestaurante().getId();
 		}
+		
 		return null;
 	}
-
 	
 }
 

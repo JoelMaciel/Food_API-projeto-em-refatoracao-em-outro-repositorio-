@@ -33,12 +33,13 @@ public interface FotoStorageService {
 		private String nomeArquivo;
 		private String contentType;
 		private InputStream inputStream;
-		
+	
 	}
 	
 	@Builder
 	@Getter
 	class FotoRecuperada {
+		
 		private InputStream inputStream;
 		private String url;
 		
@@ -46,9 +47,10 @@ public interface FotoStorageService {
 			return url != null;
 		}
 		
-		public boolean temInputStrem() {
+		public boolean temInputStream() {
 			return inputStream != null;
 		}
+		
 	}
 	
 }

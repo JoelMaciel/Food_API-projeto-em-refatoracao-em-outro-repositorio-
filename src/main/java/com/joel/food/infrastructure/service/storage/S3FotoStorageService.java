@@ -13,7 +13,6 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.joel.food.core.storage.StorageProperties;
 import com.joel.food.domain.service.FotoStorageService;
 
-@Service
 public class S3FotoStorageService implements FotoStorageService {
 
 	@Autowired
