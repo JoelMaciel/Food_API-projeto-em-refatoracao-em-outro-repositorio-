@@ -2,23 +2,29 @@ package com.joel.food.domain.service;
 
 import java.util.Set;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NonNull;
+import lombok.Singular;
 
 public interface EnvioEmailService {
-	
+
 	void enviar(Mensagem mensagem);
 	
-	
 	@Getter
-	@Setter
+	@Builder
 	class Mensagem {
 		
-		private Set<String> destinarios;
+		@Singular
+		private Set<String> destinatarios;
+		
+		@NonNull
 		private String assunto;
+		
+		@NonNull
 		private String corpo;
+		
 	}
 	
-	
-
 }
+

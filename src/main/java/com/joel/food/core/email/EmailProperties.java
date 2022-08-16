@@ -18,5 +18,5 @@ import lombok.Setter;
 public class EmailProperties {
 
 	@NotNull
-	private String rementente;
+	private String remetente;
 }
