@@ -24,6 +24,7 @@ import javax.persistence.PrePersist;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
+import com.joel.food.domain.event.PedidoCanceladoEvent;
 import com.joel.food.domain.event.PedidoConfirmadoEvent;
 import com.joel.food.domain.exception.NegocioException;
 
@@ -99,6 +100,8 @@ public class Pedido  extends AbstractAggregateRoot<Pedido>{
 	public void cancelar() {
 		setStatus(StatusPedido.CANCELADO);
 		setDataCancelamento(OffsetDateTime.now());
+		
+		registerEvent(new PedidoCanceladoEvent(this));
 		
 	}
 	
