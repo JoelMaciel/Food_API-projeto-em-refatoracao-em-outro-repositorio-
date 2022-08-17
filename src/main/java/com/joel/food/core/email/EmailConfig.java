@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.joel.food.domain.service.EnvioEmailService;
 import com.joel.food.infrastructure.service.email.FakeEnvioEmailService;
+import com.joel.food.infrastructure.service.email.SandboxEnvioEmailService;
 import com.joel.food.infrastructure.service.email.SmtpEnvioEmailService;
 
 @Configuration
@@ -21,6 +22,8 @@ public class EmailConfig {
 				return new FakeEnvioEmailService();
 			case SMTP:
 				return new SmtpEnvioEmailService();
+			case SANDBOX:
+			return new SandboxEnvioEmailService();
 			default:
 				return null;
 		}
