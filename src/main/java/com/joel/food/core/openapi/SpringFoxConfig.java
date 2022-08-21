@@ -65,7 +65,8 @@ public class SpringFoxConfig {
 	        .apiInfo(apiInfo())
 	        .tags(new Tag("Cidades", "Gerencia as cidades"),
 	        		new Tag("Grupos", "Gerencia os grupos de usuários"),
-	        		new Tag("Cozinhas", "Gerencia as cozinhas"));
+	        		new Tag("Cozinhas", "Gerencia as cozinhas"),
+	        		new Tag("Formas de pagamento", "Gerencia as formas de pagamento"));
 	        
 	  }
 	 
@@ -137,7 +138,7 @@ public class SpringFoxConfig {
 
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
-				.title("AlgaFood API")
+				.title("Joel_Food API")
 				.description("API aberta para clientes e restaurantes")
 				.version("1")
 				.contact(new Contact("Joel Maciel",
