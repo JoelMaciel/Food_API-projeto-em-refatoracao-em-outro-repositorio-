@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.joel.food.api.assembler.GrupoInputDisassembler;
 import com.joel.food.api.assembler.GrupoModelAssembler;
+import com.joel.food.api.controller.openapi.GrupoControllerOpenApi;
 import com.joel.food.api.model.GrupoModel;
 import com.joel.food.api.model.input.GrupoInput;
 import com.joel.food.domain.model.Grupo;
@@ -26,7 +27,7 @@ import com.joel.food.domain.service.CadastroGrupoService;
 
 @RestController
 @RequestMapping("/grupos")
-public class GrupoController {
+public class GrupoController implements GrupoControllerOpenApi {
 	
 	@Autowired
 	private GrupoRepository grupoRepository;
@@ -47,14 +48,14 @@ public class GrupoController {
 	}
 	
 	@GetMapping("/{grupoId}")
-	private GrupoModel buscar(@PathVariable Long grupoId) {
+	public GrupoModel buscar(@PathVariable Long grupoId) {
 		Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
 		return grupoModelAssembler.toModel(grupo);
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	private GrupoModel adicionar(@RequestBody @Valid GrupoInput grupoInput) {
+	public GrupoModel adicionar(@RequestBody @Valid GrupoInput grupoInput) {
 		Grupo grupo = grupoInputDisassembler.toDomainModelObject(grupoInput);
 		
 		grupo = cadastroGrupo.salvar(grupo);
@@ -64,7 +65,7 @@ public class GrupoController {
 	}
 	
 	@PutMapping("/{grupoId}")
-	private GrupoModel atualizar(@PathVariable Long grupoId, @RequestBody @Valid GrupoInput grupoInput) {
+	public GrupoModel atualizar(@PathVariable Long grupoId, @RequestBody @Valid GrupoInput grupoInput) {
 		Grupo grupoAtual = cadastroGrupo.buscarOuFalhar(grupoId);
 		
 		grupoInputDisassembler.copyToDomainObject(grupoInput, grupoAtual);

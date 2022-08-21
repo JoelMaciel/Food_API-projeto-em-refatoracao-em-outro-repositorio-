@@ -1,9 +1,9 @@
 package com.joel.food.core.openapi;
 
 
-import com.fasterxml.classmate.TypeResolver;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.joel.food.api.exceptionhandler.Problem;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Consumer;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +11,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+
+import com.fasterxml.classmate.TypeResolver;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.joel.food.api.exceptionhandler.Problem;
+
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -24,10 +29,6 @@ import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.json.JacksonModuleRegistrar;
 import springfox.documentation.spring.web.plugins.Docket;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Consumer;
 
 @Configuration
 @Import(BeanValidatorPluginsConfiguration.class)
@@ -51,7 +52,9 @@ public class SpringFoxConfig {
 	        .globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
 	        .additionalModels(typeResolver.resolve(Problem.class))
 	        .apiInfo(apiInfo())
-	        .tags(new Tag("Cidades", "Gerencia as cidades"));
+	        .tags(new Tag("Cidades", "Gerencia as cidades"),
+	        		new Tag("Grupos", "Gerencia os grupos de usuários"));
+	        
 	  }
 	 
 	 private List<Response> globalGetResponseMessages() {
@@ -125,7 +128,7 @@ public class SpringFoxConfig {
 				.title("AlgaFood API")
 				.description("API aberta para clientes e restaurantes")
 				.version("1")
-				.contact(new Contact("AlgaWorks",
+				.contact(new Contact("Joel Maciel",
 						"https://www.linkedin.com/in/joel-maciel-dev-java-back-end-spring-framework",
 						 "jmviana37@gmail.com"))
 				.build();
