@@ -1,4 +1,4 @@
-package com.joel.food.api.controller.openapi;
+package com.joel.food.api.openapi.controller;
 
 import java.util.List;
 

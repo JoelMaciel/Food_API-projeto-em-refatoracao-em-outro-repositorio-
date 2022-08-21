@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.joel.food.api.assembler.GrupoInputDisassembler;
 import com.joel.food.api.assembler.GrupoModelAssembler;
-import com.joel.food.api.controller.openapi.GrupoControllerOpenApi;
 import com.joel.food.api.model.GrupoModel;
 import com.joel.food.api.model.input.GrupoInput;
+import com.joel.food.api.openapi.controller.GrupoControllerOpenApi;
 import com.joel.food.domain.model.Grupo;
 import com.joel.food.domain.repository.GrupoRepository;
 import com.joel.food.domain.service.CadastroGrupoService;

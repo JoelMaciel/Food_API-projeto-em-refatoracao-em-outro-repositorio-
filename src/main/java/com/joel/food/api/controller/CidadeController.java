@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.joel.food.api.assembler.CidadeInputDisassembler;
 import com.joel.food.api.assembler.CidadeModelAssembler;
-import com.joel.food.api.controller.openapi.CidadeControllerOpenApi;
 import com.joel.food.api.model.CidadeModel;
 import com.joel.food.api.model.input.CidadeInput;
+import com.joel.food.api.openapi.controller.CidadeControllerOpenApi;
 import com.joel.food.domain.exception.EstadoNaoEncontradoException;
 import com.joel.food.domain.exception.NegocioException;
 import com.joel.food.domain.model.Cidade;
