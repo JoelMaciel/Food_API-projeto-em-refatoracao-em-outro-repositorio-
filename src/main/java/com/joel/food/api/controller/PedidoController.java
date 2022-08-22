@@ -35,6 +35,9 @@ import com.joel.food.domain.repository.PedidoRepository;
 import com.joel.food.domain.service.EmissaoPedidoService;
 import com.joel.food.infrastructure.repository.spec.PedidoSpecs;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+
 @RestController
 @RequestMapping(value = "/pedidos")
 public class PedidoController {
@@ -54,6 +57,10 @@ public class PedidoController {
 	@Autowired
 	private PedidoInputDisassembler pedidoInputDisassembler;
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
+				name = "campos", paramType = "query", type = "string" )
+	})
 	@GetMapping
 	public Page<PedidoResumoModel> pesquisar(PedidoFilter filtro , @PageableDefault(size = 10) Pageable pageable) {
 		pageable = traduzirPageable(pageable);
@@ -68,6 +75,10 @@ public class PedidoController {
 		return pedidosResumoModelPage;
 	}
 	
+	@ApiImplicitParams({
+		@ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
+				name = "campos", paramType = "query", type = "string" )
+	})
 	@GetMapping("/{codigoPedido}")
 	public PedidoModel buscar(@PathVariable String codigoPedido) {
 		Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
