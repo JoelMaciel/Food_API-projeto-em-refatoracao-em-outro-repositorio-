@@ -22,6 +22,7 @@ import com.joel.food.api.assembler.RestauranteModelAssembler;
 import com.joel.food.api.model.RestauranteModel;
 import com.joel.food.api.model.input.RestauranteInput;
 import com.joel.food.api.model.view.RestauranteView;
+import com.joel.food.api.openapi.model.RestauranteBasicoModelOpenApi;
 import com.joel.food.domain.exception.CidadeNaoEncontradaException;
 import com.joel.food.domain.exception.CozinhaNaoEncontradaException;
 import com.joel.food.domain.exception.NegocioException;
@@ -29,6 +30,10 @@ import com.joel.food.domain.exception.RestauranteNaoEncontradoException;
 import com.joel.food.domain.model.Restaurante;
 import com.joel.food.domain.repository.RestauranteRepository;
 import com.joel.food.domain.service.CadastroRestauranteService;
+
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 
 
 @RestController
@@ -47,42 +52,23 @@ public class RestauranteController {
 	@Autowired
 	private RestauranteInputDisassembler restauranteInputDisassembler;
 
+	@ApiOperation(value = "Lista Restaurantes", response = RestauranteBasicoModelOpenApi.class)
+	@ApiImplicitParams({
+		@ApiImplicitParam(value = "Nome da projeção de pedidos", allowableValues = "apenas-nome" ,
+				name = "projeção", paramType = "query", type = "string")
+	})
 	@JsonView(RestauranteView.Resumo.class)
 	@GetMapping
 	public List<RestauranteModel> listar() {
 		return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
 	}
 	
+	@ApiOperation(value = "Lista restaurantes" , hidden = true)
 	@JsonView(RestauranteView.ApenasNome.class)
 	@GetMapping(params = "projecao=apenas-nome")
 	public List<RestauranteModel> listarApenasNomes() {
 		return listar();
 	}
-	
-//	@JsonView(RestauranteView.Resumo.class)
-//	@GetMapping(params = "projecao=resumo")
-//	public List<RestauranteModel> listarResumido() {
-//		return listar();
-//	}
-	
-//	@GetMapping
-//	public MappingJacksonValue listar(@RequestParam(required = false) String projecao) {
-//		List<Restaurante> restaurantes = restauranteRepository.findAll();
-//		List<RestauranteModel> restaurantesModel = restauranteModelAssembler.toCollectionModel(restaurantes);
-//		
-//	    MappingJacksonValue restaurantesWrapper = new MappingJacksonValue(restaurantesModel);
-//	    
-//	    restaurantesWrapper.setSerializationView(RestauranteView.Resumo.class);
-//	    
-//	    if("apenas-nome".equals(projecao)) {
-//	    	restaurantesWrapper.setSerializationView(RestauranteView.ApenasNome.class);	    	
-//	    } else if ("completo".equals(projecao)) {
-//	    	restaurantesWrapper.setSerializationView(null);
-//	    }
-//	    
-//	    return restaurantesWrapper;
-//	}
-	
 	
 
 	@GetMapping("/{restauranteId}")

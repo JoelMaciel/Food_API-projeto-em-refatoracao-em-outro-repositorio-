@@ -18,9 +18,9 @@ import org.springframework.web.context.request.ServletWebRequest;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.joel.food.api.exceptionhandler.Problem;
-import com.joel.food.api.model.CozinhaModel;
-import com.joel.food.api.openapi.model.CozinhasModelOpenApi;
+import com.joel.food.api.model.PedidoResumoModel;
 import com.joel.food.api.openapi.model.PageableModelOpenApi;
+import com.joel.food.api.openapi.model.PedidosResumoModelOpenApi;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -48,34 +48,27 @@ public class SpringFoxConfig {
 		 var typeResolver = new TypeResolver();
 		 
 	    return new Docket(DocumentationType.OAS_30)
-	        .select()
-	          .apis(RequestHandlerSelectors.basePackage("com.joel.food.api"))
-	          .paths(PathSelectors.any())
-	          .build()
-	        .useDefaultResponseMessages(false)
-	        .globalResponses(HttpMethod.GET, globalGetResponseMessages())
-	        .globalResponses(HttpMethod.POST, globalPostPutResponseMessages())
-	        .globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
-	        .globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
-//	        .globalRequestParameters(Collections.singletonList(
-//	                new RequestParameterBuilder()
-//	                        .name("campos")
-//	                        .description("Nomes das propriedades para filtrar na resposta, separados por vírgula")
-//	                        .in(ParameterType.QUERY)
-//	                        .required(true)
-//	                        .query(q -> q.model(m -> m.scalarModel(ScalarType.STRING)))
-//	                        .build())
-//	        )
-	        .directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
-	        .additionalModels(typeResolver.resolve(Problem.class))
-	        .ignoredParameterTypes(ServletWebRequest.class)
-	        .alternateTypeRules(AlternateTypeRules.newRule(
-	        		typeResolver.resolve(Page.class,CozinhaModel.class), CozinhasModelOpenApi.class))
-	        .apiInfo(apiInfo())
-	        .tags(new Tag("Cidades", "Gerencia as cidades"),
-	        		new Tag("Grupos", "Gerencia os grupos de usuários"),
-	        		new Tag("Cozinhas", "Gerencia as cozinhas"),
-	        		new Tag("Formas de pagamento", "Gerencia as formas de pagamento"));
+	    		.select()
+				.apis(RequestHandlerSelectors.basePackage("com.joel.food.api"))
+				.paths(PathSelectors.any())
+				.build()
+			.useDefaultResponseMessages(false)
+			.globalResponses(HttpMethod.GET, globalGetResponseMessages())
+			.globalResponses(HttpMethod.POST, globalPostPutResponseMessages())
+			.globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
+			.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
+			.additionalModels(typeResolver.resolve(Problem.class))
+			.ignoredParameterTypes(ServletWebRequest.class)
+			.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+			.alternateTypeRules(AlternateTypeRules.newRule(
+					typeResolver.resolve(Page.class, PedidoResumoModel.class),
+					PedidosResumoModelOpenApi.class))
+			.apiInfo(apiInfo())
+			.tags(new Tag("Cidades", "Gerencia as cidades"),
+					new Tag("Grupos", "Gerencia os grupos de usuários"),
+					new Tag("Cozinhas", "Gerencia as cozinhas"),
+					new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
+					new Tag("Pedidos", "Gerencia os pedidos"));
 	        
 	  }
 	 
