@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ import com.joel.food.api.assembler.RestauranteModelAssembler;
 import com.joel.food.api.model.RestauranteModel;
 import com.joel.food.api.model.input.RestauranteInput;
 import com.joel.food.api.model.view.RestauranteView;
+import com.joel.food.api.openapi.controller.RestauranteControllerOpenApi;
 import com.joel.food.api.openapi.model.RestauranteBasicoModelOpenApi;
 import com.joel.food.domain.exception.CidadeNaoEncontradaException;
 import com.joel.food.domain.exception.CozinhaNaoEncontradaException;
@@ -38,7 +40,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(value = "/restaurantes")
-public class RestauranteController {
+public class RestauranteController implements RestauranteControllerOpenApi {
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
@@ -58,7 +60,7 @@ public class RestauranteController {
 				name = "projeção", paramType = "query", type = "string")
 	})
 	@JsonView(RestauranteView.Resumo.class)
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<RestauranteModel> listar() {
 		return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
 	}
@@ -71,7 +73,7 @@ public class RestauranteController {
 	}
 	
 
-	@GetMapping("/{restauranteId}")
+	@GetMapping(value = "/{restauranteId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public RestauranteModel buscar(@PathVariable Long restauranteId) {
 
 		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
@@ -80,7 +82,7 @@ public class RestauranteController {
 
 	}
 
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
 
@@ -94,7 +96,7 @@ public class RestauranteController {
 		}
 	}
 
-	@PutMapping("/{restauranteId}")
+	@PutMapping(path = "/{restauranteId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public RestauranteModel atualizar(@PathVariable Long restauranteId,
 			@RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
@@ -109,7 +111,7 @@ public class RestauranteController {
 		}
 	}
 
-	@PutMapping("/{restauranteId}/ativo")
+	@PutMapping(path = "/{restauranteId}/ativo", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void ativar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.ativar(restauranteId);
@@ -121,7 +123,7 @@ public class RestauranteController {
 		cadastroRestaurante.inativar(restauranteId);
 	}
 	
-	@PutMapping("/ativacoes")
+	@PutMapping(path = "/ativacoes", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void ativarMultiplos(@RequestBody List<Long> restauranteIds) {
 		try {
@@ -132,7 +134,7 @@ public class RestauranteController {
 		}
 	}
 	
-	@DeleteMapping("/ativacoes")
+	@DeleteMapping(path = "/ativacoes", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void inativarMultiplos(@RequestBody List<Long> restauranteIds) {
 		try {
@@ -142,13 +144,13 @@ public class RestauranteController {
 		}
 	}
 	
-	@PutMapping("/{restauranteId}/abertura")
+	@PutMapping(path = "/{restauranteId}/abertura" , produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void abrir(@PathVariable Long restauranteId) {
 		cadastroRestaurante.abrir(restauranteId);
 	}
 	
-	@PutMapping("/{restauranteId}/fechamento")
+	@PutMapping(path = "/{restauranteId}/fechamento", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void fechar(@PathVariable Long restauranteId) {
 		cadastroRestaurante.fehcar(restauranteId);

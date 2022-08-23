@@ -26,7 +26,7 @@ public interface CidadeControllerOpenApi {
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
 			@ApiResponse(responseCode = "400", description = "ID da cidade é inválido", 
 			content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
-	public CidadeModel buscar(@ApiParam("ID de uma cidade") Long cidadeId);
+	public CidadeModel buscar(@ApiParam(value = "ID de uma cidade", example = "1", required = true ) Long cidadeId);
 
 	
 
@@ -35,7 +35,7 @@ public interface CidadeControllerOpenApi {
 		@ApiResponse(responseCode  = "201", description  = "Cidade cadastrada")
 	})
 	public CidadeModel adicionar(
-			@ApiParam(name = "corpo", value = "Representacao de uma nova cidade")
+			@ApiParam(name = "corpo", value = "Representacao de uma nova cidade", required = true)
 	        CidadeInput cidadeInput) ;
 		
 
@@ -45,7 +45,7 @@ public interface CidadeControllerOpenApi {
 	@ApiResponses({
 			@ApiResponse(responseCode = "200", description = "Cidade atualizada", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
 			@ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
-	public CidadeModel atualizar(@ApiParam(value = "ID de uma cidade", example = "1") Long cidadeId,
+	public CidadeModel atualizar(@ApiParam(value = "ID de uma cidade", example = "1", required = true) Long cidadeId,
 			@ApiParam(name = "corpo", value = "Atualizacão de uma cidade com os novos dados") CidadeInput cidadeInput) ;
 
 	
@@ -54,7 +54,7 @@ public interface CidadeControllerOpenApi {
 	@ApiResponses({
 			@ApiResponse(responseCode = "204", description = "Cidade excluída", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
 			@ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
-	public void remover(@ApiParam(value = "ID de uma cidade", example = "1") Long cidadeId);
+	public void remover(@ApiParam(value = "ID de uma cidade", example = "1", required = true) Long cidadeId);
 
 
 }
