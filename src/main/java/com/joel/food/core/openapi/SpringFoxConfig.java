@@ -58,27 +58,28 @@ public class SpringFoxConfig {
 				.apis(RequestHandlerSelectors.basePackage("com.joel.food.api"))
 				.paths(PathSelectors.any())
 				.build()
-			.useDefaultResponseMessages(false)
-			.globalResponses(HttpMethod.GET, globalGetResponseMessages())
-			.globalResponses(HttpMethod.POST, globalPostPutResponseMessages())
-			.globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
-			.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
-			.additionalModels(typeResolver.resolve(Problem.class))
-			.ignoredParameterTypes(ServletWebRequest.class , URL.class, URI.class, URLStreamHandler.class,
-					Resource.class, File.class, InputStream.class)
-			.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
-			.alternateTypeRules(AlternateTypeRules.newRule(
-					typeResolver.resolve(Page.class, PedidoResumoModel.class),
-					PedidosResumoModelOpenApi.class))
-			.apiInfo(apiInfo())
-			.tags(new Tag("Cidades", "Gerencia as cidades"),
-					new Tag("Grupos", "Gerencia os grupos de usuários"),
-					new Tag("Cozinhas", "Gerencia as cozinhas"),
-					new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
-					new Tag("Pedidos", "Gerencia os pedidos"),
-	                new Tag("Restaurantes", "Gerencia os restaurantes"),
-	                new Tag("Estados", "Gerencia os estados"),
-	                new Tag("Produtos", "Gerencia os produtos de restaurantes"));
+				.useDefaultResponseMessages(false)
+				.globalResponses(HttpMethod.GET, globalGetResponseMessages())
+				.globalResponses(HttpMethod.POST, globalPostPutResponseMessages())
+				.globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
+				.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
+				.additionalModels(typeResolver.resolve(Problem.class))
+				.ignoredParameterTypes(ServletWebRequest.class,
+						URL.class, URI.class, URLStreamHandler.class, Resource.class,
+						File.class, InputStream.class)
+				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+				.alternateTypeRules(AlternateTypeRules.newRule(
+						typeResolver.resolve(Page.class, PedidoResumoModel.class),
+						PedidosResumoModelOpenApi.class))
+				.apiInfo(apiInfo())
+				.tags(new Tag("Cidades", "Gerencia as cidades"),
+						new Tag("Grupos", "Gerencia os grupos de usuários"),
+						new Tag("Cozinhas", "Gerencia as cozinhas"),
+						new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
+						new Tag("Pedidos", "Gerencia os pedidos"),
+						new Tag("Restaurantes", "Gerencia os restaurantes"),
+						new Tag("Estados", "Gerencia os estados"),
+						new Tag("Produtos", "Gerencia os produtos de restaurantes"));
 
 
 	        
