@@ -29,10 +29,10 @@ public interface RestauranteControllerOpenApi {
                 name = "projecao", paramType = "query", type = "string")
     })
     @JsonView(RestauranteView.Resumo.class)
-    public List<RestauranteModel> listar();
+    List<RestauranteModel> listar();
     
     @ApiOperation(value = "Lista restaurantes", hidden = true)
-    public List<RestauranteModel> listarApenasNomes();
+     List<RestauranteModel> listarApenasNomes();
     
     @ApiOperation("Busca um restaurante por ID")
     @ApiResponses({
@@ -41,7 +41,7 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(responseCode = "404",description = "Restaurante não encontrado",
         content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    public RestauranteModel buscar(
+     RestauranteModel buscar(
             @ApiParam(value = "ID de um restaurante", example = "1", required = true)
             Long restauranteId);
     
@@ -50,7 +50,7 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(responseCode = "201", description = "Restaurante cadastrado" ,
         		content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
     })
-    public RestauranteModel adicionar(
+     RestauranteModel adicionar(
             @ApiParam(name = "corpo", value = "Representação de um novo restaurante", required = true)
             RestauranteInput restauranteInput);
     
@@ -60,7 +60,7 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(responseCode = "404" , description = "Restaurante não encontrado",
         		content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    public RestauranteModel atualizar(
+    RestauranteModel atualizar(
             @ApiParam(value = "ID de um restaurante", example = "1", required = true)
             Long restauranteId,
             
@@ -74,7 +74,7 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(responseCode = "404", description = "Restaurante não encontrado",
         content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    public void ativar(
+     void ativar(
             @ApiParam(value = "ID de um restaurante", example = "1", required = true)
             Long restauranteId);
     
@@ -84,7 +84,7 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(responseCode = "404", description = "Restaurante não encontrado",
         		content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    public void inativar(
+     void inativar(
             @ApiParam(value = "ID de um restaurante", example = "1", required = true)
             Long restauranteId);
     
@@ -92,7 +92,7 @@ public interface RestauranteControllerOpenApi {
     @ApiResponses({
         @ApiResponse(responseCode = "204", description = "Restaurantes ativados com sucesso")
     })
-    public void ativarMultiplos(
+     void ativarMultiplos(
             @ApiParam(name = "corpo", value = "IDs de restaurantes", required = true)
             List<Long> restauranteIds);
     
@@ -100,7 +100,7 @@ public interface RestauranteControllerOpenApi {
     @ApiResponses({
         @ApiResponse(responseCode = "204", description = "Restaurantes ativados com sucesso")
     })
-    public void inativarMultiplos(
+    void inativarMultiplos(
             @ApiParam(name = "corpo", value = "IDs de restaurantes", required = true)
             List<Long> restauranteIds);
 
@@ -110,7 +110,7 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(responseCode = "404", description = "Restaurante não encontrado",
         		content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    public void abrir(
+     void abrir(
             @ApiParam(value = "ID de um restaurante", example = "1", required = true)
             Long restauranteId);
     
@@ -120,7 +120,7 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(responseCode = "404", description ="Restaurante não encontrado",
        content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    public void fechar(
+     void fechar(
             @ApiParam(value = "ID de um restaurante", example = "1", required = true)
             Long restauranteId);
 
