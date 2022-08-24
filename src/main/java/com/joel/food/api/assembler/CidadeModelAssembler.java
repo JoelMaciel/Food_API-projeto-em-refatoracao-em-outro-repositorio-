@@ -7,7 +7,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 import com.joel.food.api.controller.CidadeController;
@@ -31,11 +30,6 @@ RepresentationModelAssemblerSupport<Cidade, CidadeModel>{
 		CidadeModel cidadeModel = createModelWithId(cidade.getId(), cidade);
 		
 		modelMapper.map(cidade, cidadeModel);
-		
-		//CidadeModel cidadeModel =  modelMapper.map(cidade, CidadeModel.class);
-		
-		cidadeModel.add(WebMvcLinkBuilder.linkTo(methodOn(CidadeController.class)
-				.buscar(cidadeModel.getId())).withSelfRel());
 		
 		cidadeModel.add(linkTo(methodOn(CidadeController.class)
 				.listar()).withRel("cidades"));

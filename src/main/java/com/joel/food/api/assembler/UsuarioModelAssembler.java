@@ -43,4 +43,4 @@ public class UsuarioModelAssembler
         return super.toCollectionModel(entities)
             .add(linkTo(UsuarioController.class).withSelfRel());
     }   
-} 
+}        
