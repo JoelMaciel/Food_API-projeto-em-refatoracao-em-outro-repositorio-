@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,11 +43,12 @@ public class EstadoController implements EstadoControllerOpenApi {
 	@Autowired
 	private CadastroEstadoService cadastroEstado;
 
+	@Override
 	@GetMapping
-	public List<EstadoModel> listar() {
-		List<Estado> todosEstados = estadoRepository.findAll();
-		
-		return estadoModelAssembler.toCollectionModel(todosEstados);
+	public CollectionModel<EstadoModel> listar() {
+	    List<Estado> todosEstados = estadoRepository.findAll();
+	    
+	    return estadoModelAssembler.toCollectionModel(todosEstados);
 	}
 
 	@GetMapping("/{estadoId}")
