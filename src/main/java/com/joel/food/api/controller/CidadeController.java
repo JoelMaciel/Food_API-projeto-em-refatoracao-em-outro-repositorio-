@@ -1,15 +1,11 @@
 package com.joel.food.api.controller;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -56,10 +52,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 		return  cidadeModelAssembler.toCollectionModel(todasCidades);
 		
-		
-		//CollectionModel<CidadeModel> cidadesCollectionModel = CollectionModel.of(cidadesModel);
-		
-		//cidadesCollectionModel.add(linkTo(CidadeController.class).withSelfRel());
+	
 
 	}
 
