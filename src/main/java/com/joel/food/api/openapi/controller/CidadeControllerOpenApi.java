@@ -1,6 +1,6 @@
 package com.joel.food.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 import com.joel.food.api.exceptionhandler.Problem;
 import com.joel.food.api.model.CidadeModel;
@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public interface CidadeControllerOpenApi {
 
 	@ApiOperation("Lista as cidades")
-	 List<CidadeModel> listar();
+	 CollectionModel<CidadeModel> listar();
 
 	@ApiOperation("Busca uma cidade por ID")
 	@ApiResponses({
