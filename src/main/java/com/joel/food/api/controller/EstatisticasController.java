@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.joel.food.api.openapi.controller.EstatisticasControllerOpenApi;
 import com.joel.food.domain.filter.VendaDiariaFilter;
 import com.joel.food.domain.model.dto.VendaDiaria;
 import com.joel.food.domain.service.VendaQueryService;
@@ -18,7 +19,7 @@ import com.joel.food.domain.service.VendaReportService;
 
 @RequestMapping(path = "/estatisticas")
 @RestController
-public class EstatisticasController {
+public class EstatisticasController  implements EstatisticasControllerOpenApi{
 	
 	@Autowired
 	private VendaReportService vendaReportService;
