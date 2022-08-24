@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,13 +22,14 @@ import com.joel.food.api.model.UsuarioModel;
 import com.joel.food.api.model.input.SenhaInput;
 import com.joel.food.api.model.input.UsuarioComSenhaInput;
 import com.joel.food.api.model.input.UsuarioInput;
+import com.joel.food.api.openapi.controller.UsuarioControllerOpenApi;
 import com.joel.food.domain.model.Usuario;
 import com.joel.food.domain.repository.UsuarioRepository;
 import com.joel.food.domain.service.CadastroUsuarioService;
 
 @RestController
-@RequestMapping(value = "/usuarios")
-public class UsuarioController {
+@RequestMapping(value = "/usuarios" , produces = MediaType.APPLICATION_JSON_VALUE)
+public class UsuarioController  implements UsuarioControllerOpenApi{
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;

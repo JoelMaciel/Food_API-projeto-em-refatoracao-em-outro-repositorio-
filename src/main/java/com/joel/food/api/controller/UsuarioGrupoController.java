@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.joel.food.api.assembler.GrupoModelAssembler;
 import com.joel.food.api.model.GrupoModel;
+import com.joel.food.api.openapi.controller.UsuarioGrupoControllerOpenApi;
 import com.joel.food.domain.model.Usuario;
 import com.joel.food.domain.service.CadastroUsuarioService;
 
 @RestController
 @RequestMapping(value = "/usuarios/{usuarioId}/grupos")
-public class UsuarioGrupoController {
+public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi{
 	
 	@Autowired
 	private CadastroUsuarioService cadastroUsuario;
