@@ -5,7 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -59,9 +59,16 @@ public class CidadeController implements CidadeControllerOpenApi {
 		Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
 
 		CidadeModel cidadeModel = cidadeModelAssembler.toModel(cidade);
-		cidadeModel.add(Link.of("http://localhost:8080/cidades/1"));
-		cidadeModel.add(Link.of("http://localhost:8080/cidades/", "cidades"));
-		cidadeModel.getEstado().add(Link.of("http://localhost:8080/estados/1"));
+		
+		cidadeModel.add(WebMvcLinkBuilder.linkTo(CidadeController.class)
+				.slash(cidadeModel.getId()).withSelfRel());
+		
+		cidadeModel.add(WebMvcLinkBuilder.linkTo(CidadeController.class)
+				.withRel("cidades"));
+		
+		cidadeModel.getEstado().add(WebMvcLinkBuilder.linkTo(EstadoController.class)
+				.slash(cidadeModel.getEstado().getId()).withSelfRel());;
+		
 		
 		return cidadeModel;
 	}
