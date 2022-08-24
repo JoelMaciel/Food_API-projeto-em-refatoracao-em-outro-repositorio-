@@ -1,4 +1,4 @@
-package com.joel.food.core.openapi;
+package com.joel.food.core.springfox;
 
 
 import java.io.File;
