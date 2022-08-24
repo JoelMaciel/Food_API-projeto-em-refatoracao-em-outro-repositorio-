@@ -1,7 +1,7 @@
 package com.joel.food.api.openapi.controller;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 
 import com.joel.food.api.exceptionhandler.Problem;
 import com.joel.food.api.model.CozinhaModel;
@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public interface CozinhaControllerOpenApi {
 
     @ApiOperation("Lista as cozinhas com paginação")
-    public Page<CozinhaModel> listar(Pageable pageable);
+    public PagedModel<CozinhaModel> listar(Pageable pageable);
     
     @ApiOperation("Busca uma cozinha por ID")
     @ApiResponses({
