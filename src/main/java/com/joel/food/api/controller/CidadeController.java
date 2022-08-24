@@ -54,25 +54,13 @@ public class CidadeController implements CidadeControllerOpenApi {
 	public CollectionModel<CidadeModel> listar() {
 		List<Cidade> todasCidades = cidadeRepository.findAll();
 
-		List<CidadeModel> cidadesModel = cidadeModelAssembler.toCollectionModel(todasCidades);
-		cidadesModel.forEach(cidadeModel -> {
-			
-			cidadeModel.add(WebMvcLinkBuilder.linkTo(methodOn(CidadeController.class)
-					.buscar(cidadeModel.getId())).withSelfRel());
-			
-			cidadeModel.add(linkTo(methodOn(CidadeController.class)
-					.listar()).withRel("cidades"));
-			
-			cidadeModel.getEstado().add(linkTo(methodOn(EstadoController.class)
-					.buscar(cidadeModel.getEstado().getId())).withSelfRel());
-			
-		});
+		return  cidadeModelAssembler.toCollectionModel(todasCidades);
 		
-		CollectionModel<CidadeModel> cidadesCollectionModel = CollectionModel.of(cidadesModel);
 		
-		cidadesCollectionModel.add(linkTo(CidadeController.class).withSelfRel());
+		//CollectionModel<CidadeModel> cidadesCollectionModel = CollectionModel.of(cidadesModel);
+		
+		//cidadesCollectionModel.add(linkTo(CidadeController.class).withSelfRel());
 
-		return cidadesCollectionModel;
 	}
 
 	@GetMapping(path = "/{cidadeId}" , produces = MediaType.APPLICATION_JSON_VALUE)
@@ -81,17 +69,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 		Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
 
 		CidadeModel cidadeModel = cidadeModelAssembler.toModel(cidade);
-		
-		cidadeModel.add(WebMvcLinkBuilder.linkTo(methodOn(CidadeController.class)
-				.buscar(cidadeModel.getId())).withSelfRel());
-		
-		cidadeModel.add(linkTo(methodOn(CidadeController.class)
-				.listar()).withRel("cidades"));
-		
-		cidadeModel.getEstado().add(linkTo(methodOn(EstadoController.class)
-				.buscar(cidadeModel.getEstado().getId())).withSelfRel());
-		
-		
+			
 		return cidadeModel;
 	}
 
