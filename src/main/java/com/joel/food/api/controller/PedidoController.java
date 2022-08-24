@@ -26,6 +26,7 @@ import com.joel.food.api.model.PedidoModel;
 import com.joel.food.api.model.PedidoResumoModel;
 import com.joel.food.api.model.input.PedidoInput;
 import com.joel.food.api.openapi.controller.PedidoControllerOpenApi;
+import com.joel.food.core.data.PageWrapper;
 import com.joel.food.core.data.PageableTranslator;
 import com.joel.food.domain.exception.EntidadeNaoEncontradaException;
 import com.joel.food.domain.exception.NegocioException;
@@ -69,10 +70,12 @@ public class PedidoController implements PedidoControllerOpenApi {
 	@Override
 	public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, 
 	        @PageableDefault(size = 10) Pageable pageable) {
-	    pageable = traduzirPageable(pageable);
+	   Pageable pageableTraduzido = traduzirPageable(pageable);
 	    
 	    Page<Pedido> pedidosPage = pedidoRepository.findAll(
-	            PedidoSpecs.usandoFiltro(filtro), pageable);
+	            PedidoSpecs.usandoFiltro(filtro), pageableTraduzido);
+	    
+	    pedidosPage = new PageWrapper<>(pedidosPage, pageable);
 	    
 	    return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoModelAssembler);
 	}
