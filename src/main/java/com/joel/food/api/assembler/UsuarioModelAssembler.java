@@ -1,7 +1,6 @@
 package com.joel.food.api.assembler;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +8,8 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import com.joel.food.api.FoodLinks;
 import com.joel.food.api.controller.UsuarioController;
-import com.joel.food.api.controller.UsuarioGrupoController;
 import com.joel.food.api.model.UsuarioModel;
 import com.joel.food.domain.model.Usuario;
 
@@ -21,6 +20,9 @@ public class UsuarioModelAssembler
     @Autowired
     private ModelMapper modelMapper;
     
+    @Autowired
+    private FoodLinks foodLinks;
+    
     public UsuarioModelAssembler() {
         super(UsuarioController.class, UsuarioModel.class);
     }
@@ -30,10 +32,9 @@ public class UsuarioModelAssembler
         UsuarioModel usuarioModel = createModelWithId(usuario.getId(), usuario);
         modelMapper.map(usuario, usuarioModel);
         
-        usuarioModel.add(linkTo(UsuarioController.class).withRel("usuarios"));
+        usuarioModel.add(foodLinks.linkToUsuarios("usuarios"));
         
-        usuarioModel.add(linkTo(methodOn(UsuarioGrupoController.class)
-                .listar(usuario.getId())).withRel("grupos-usuario"));
+        usuarioModel.add(foodLinks.linkToGruposUsuario(usuario.getId(), "grupo-usuario"));
         
         return usuarioModel;
     }
