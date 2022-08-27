@@ -33,6 +33,7 @@ import com.joel.food.api.model.FormaPagamentoModel;
 import com.joel.food.api.model.GrupoModel;
 import com.joel.food.api.model.PedidoResumoModel;
 import com.joel.food.api.model.PermissaoModel;
+import com.joel.food.api.model.ProdutoModel;
 import com.joel.food.api.openapi.model.CidadesModelOpenApi;
 import com.joel.food.api.openapi.model.CozinhasModelOpenApi;
 import com.joel.food.api.openapi.model.EstadosModelOpenApi;
@@ -42,6 +43,7 @@ import com.joel.food.api.openapi.model.LinksModelOpenApi;
 import com.joel.food.api.openapi.model.PageableModelOpenApi;
 import com.joel.food.api.openapi.model.PedidosResumoModelOpenApi;
 import com.joel.food.api.openapi.model.PermissoesModelOpenApi;
+import com.joel.food.api.openapi.model.ProdutosModelOpenApi;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -99,6 +101,9 @@ public class SpringFoxConfig {
 				.alternateTypeRules(AlternateTypeRules.newRule(
 					    typeResolver.resolve(CollectionModel.class, FormaPagamentoModel.class),
 					    FormasPagamentoModelOpenApi.class))
+				.alternateTypeRules(AlternateTypeRules.newRule(
+					    typeResolver.resolve(CollectionModel.class, ProdutoModel.class),
+					    ProdutosModelOpenApi.class))
 				.alternateTypeRules(AlternateTypeRules.newRule(
 					    typeResolver.resolve(CollectionModel.class, GrupoModel.class),
 					    GruposModelOpenApi.class))
