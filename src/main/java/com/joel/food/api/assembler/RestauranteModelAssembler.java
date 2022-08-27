@@ -14,6 +14,7 @@ import com.joel.food.domain.model.Restaurante;
 @Component
 public class RestauranteModelAssembler 
         extends RepresentationModelAssemblerSupport<Restaurante, RestauranteModel> {
+	
 
     @Autowired
     private ModelMapper modelMapper;

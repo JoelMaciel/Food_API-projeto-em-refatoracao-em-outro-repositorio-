@@ -29,7 +29,7 @@ public class PedidoModelAssembler
         PedidoModel pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
         modelMapper.map(pedido, pedidoModel);
         
-        pedidoModel.add(foodLinks.linkToPedidos());
+        pedidoModel.add(foodLinks.linkToPedidos("pedidos"));
         
         if(pedido.podeSerConfirmado()) {
         	pedidoModel.add(foodLinks.linkToConfirmaçaoPedido(pedido.getCodigo(), "confirmar"));        	
