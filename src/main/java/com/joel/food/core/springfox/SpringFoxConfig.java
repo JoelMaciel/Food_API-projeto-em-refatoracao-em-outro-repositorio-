@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,8 +28,10 @@ import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.joel.food.api.exceptionhandler.Problem;
 import com.joel.food.api.model.CidadeModel;
+import com.joel.food.api.model.CozinhaModel;
 import com.joel.food.api.model.PedidoResumoModel;
 import com.joel.food.api.openapi.model.CidadesModelOpenApi;
+import com.joel.food.api.openapi.model.CozinhasModelOpenApi;
 import com.joel.food.api.openapi.model.LinksModelOpenApi;
 import com.joel.food.api.openapi.model.PageableModelOpenApi;
 import com.joel.food.api.openapi.model.PedidosResumoModelOpenApi;
@@ -77,6 +80,9 @@ public class SpringFoxConfig {
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(Page.class, PedidoResumoModel.class),
 						PedidosResumoModelOpenApi.class))
+				.alternateTypeRules(AlternateTypeRules.newRule(
+						typeResolver.resolve(PagedModel.class, CozinhaModel.class),
+						CozinhasModelOpenApi.class))
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(CollectionModel.class, CidadeModel.class),
 						CidadesModelOpenApi.class))
