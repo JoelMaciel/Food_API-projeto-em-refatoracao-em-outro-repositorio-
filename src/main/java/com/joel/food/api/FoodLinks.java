@@ -185,6 +185,11 @@ public class FoodLinks {
 	            .listar(restauranteId)).withRel(rel);
 	}
 
+	public Link linkToRestauranteFormaPagamentoAssociacao(
+			Long restauranteId, String rel) {
+		return linkTo(methodOn(RestauranteFormaPagamentoController.class)
+				.desassociar(restauranteId, null)).withRel(rel);
+	}
 	public Link linkToRestauranteFormaPagamentoDesassociacao(
 			Long restauranteId, Long formaPagamentoId, String rel) {
 		return linkTo(methodOn(RestauranteFormaPagamentoController.class)
