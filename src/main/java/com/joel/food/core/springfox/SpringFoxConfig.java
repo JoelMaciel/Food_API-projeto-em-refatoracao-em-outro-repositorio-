@@ -30,10 +30,12 @@ import com.joel.food.api.exceptionhandler.Problem;
 import com.joel.food.api.model.CidadeModel;
 import com.joel.food.api.model.CozinhaModel;
 import com.joel.food.api.model.EstadoModel;
+import com.joel.food.api.model.FormaPagamentoModel;
 import com.joel.food.api.model.PedidoResumoModel;
 import com.joel.food.api.openapi.model.CidadesModelOpenApi;
 import com.joel.food.api.openapi.model.CozinhasModelOpenApi;
 import com.joel.food.api.openapi.model.EstadosModelOpenApi;
+import com.joel.food.api.openapi.model.FormasPagamentoModelOpenApi;
 import com.joel.food.api.openapi.model.LinksModelOpenApi;
 import com.joel.food.api.openapi.model.PageableModelOpenApi;
 import com.joel.food.api.openapi.model.PedidosResumoModelOpenApi;
@@ -91,6 +93,9 @@ public class SpringFoxConfig {
 				.alternateTypeRules(AlternateTypeRules.newRule(
 				        typeResolver.resolve(CollectionModel.class, EstadoModel.class),
 				        EstadosModelOpenApi.class))
+				.alternateTypeRules(AlternateTypeRules.newRule(
+					    typeResolver.resolve(CollectionModel.class, FormaPagamentoModel.class),
+					    FormasPagamentoModelOpenApi.class))
 				.apiInfo(apiInfo())
 				.tags(new Tag("Cidades", "Gerencia as cidades"),
 						new Tag("Grupos", "Gerencia os grupos de usuários"),
