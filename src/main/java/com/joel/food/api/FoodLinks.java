@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import com.joel.food.api.controller.CidadeController;
 import com.joel.food.api.controller.CozinhaController;
 import com.joel.food.api.controller.EstadoController;
+import com.joel.food.api.controller.EstatisticasController;
 import com.joel.food.api.controller.FluxoPedidoController;
 import com.joel.food.api.controller.FormaPagamentoController;
 import com.joel.food.api.controller.GrupoController;
@@ -312,4 +313,21 @@ public class FoodLinks {
 	    return linkTo(methodOn(UsuarioGrupoController.class)
 	            .desassociar(usuarioId, grupoId)).withRel(rel);
 	}  
+	
+	public Link linkToEstatisticas(String rel) {
+	    return linkTo(EstatisticasController.class).withRel(rel);
+	}
+
+	public Link linkToEstatisticasVendasDiarias(String rel) {
+	    TemplateVariables filtroVariables = new TemplateVariables(
+	            new TemplateVariable("restauranteId", VariableType.REQUEST_PARAM),
+	            new TemplateVariable("dataCriacaoInicio", VariableType.REQUEST_PARAM),
+	            new TemplateVariable("dataCriacaoFim", VariableType.REQUEST_PARAM),
+	            new TemplateVariable("timeOffset", VariableType.REQUEST_PARAM));
+	    
+	    String pedidosUrl = linkTo(methodOn(EstatisticasController.class)
+	            .consultarVendasDiarias(null, null)).toUri().toString();
+	    
+	    return Link.of(UriTemplate.of(pedidosUrl, filtroVariables), rel);
+	}   
 }
