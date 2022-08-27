@@ -1,8 +1,7 @@
 package com.joel.food.api.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.joel.food.api.FoodLinks;
 import com.joel.food.api.assembler.FormaPagamentoModelAssembler;
 import com.joel.food.api.model.FormaPagamentoModel;
 import com.joel.food.api.openapi.controller.RestauranteFormaPagamentoControllerOpenApi;
@@ -23,6 +23,8 @@ import com.joel.food.domain.service.CadastroRestauranteService;
 @RequestMapping(path = "/restaurantes/{restauranteId}/formas-pagamento",produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestauranteFormaPagamentoController implements RestauranteFormaPagamentoControllerOpenApi {
 
+	@Autowired
+	private FoodLinks foodLinks;
 
 	@Autowired
 	private CadastroRestauranteService cadastroRestaurante;
@@ -31,10 +33,12 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 	private FormaPagamentoModelAssembler formaPagamentoModelAssembler;
 
 	@GetMapping
-	public List<FormaPagamentoModel> listar(@PathVariable Long restauranteId) {
+	public CollectionModel<FormaPagamentoModel> listar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 		
-		return formaPagamentoModelAssembler.toCollectionModel(restaurante.getFormasPagamento());	
+		return formaPagamentoModelAssembler.toCollectionModel(restaurante.getFormasPagamento())
+				.removeLinks()
+				.add(foodLinks.linkToRestauranteFormasPagamento(restauranteId));	
 	}
 	
 	@DeleteMapping("/{formaPagamentoId}")

@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -48,31 +49,32 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 	@Autowired
 	private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
 	
+	@Override
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<FormaPagamentoModel>> listar(ServletWebRequest request){
+	public ResponseEntity<CollectionModel<FormaPagamentoModel>> listar(ServletWebRequest request) {
 		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
-		
+
 		String eTag = "0";
-		
-		OffsetDateTime dataUltimaAtualizazao = formaPagamentoRepository.getDataUltimaAtualizacao();
-		
-		if(dataUltimaAtualizazao != null) {
-			eTag = String.valueOf(dataUltimaAtualizazao.toEpochSecond());
+
+		OffsetDateTime dataUltimaAtualizacao = formaPagamentoRepository.getDataUltimaAtualizacao();
+
+		if (dataUltimaAtualizacao != null) {
+			eTag = String.valueOf(dataUltimaAtualizacao.toEpochSecond());
 		}
-		
-		if(request.checkNotModified(eTag)) {
+
+		if (request.checkNotModified(eTag)) {
 			return null;
 		}
-		
+
 		List<FormaPagamento> todasFormasPagamentos = formaPagamentoRepository.findAll();
-		
-		List<FormaPagamentoModel> formasPagamentoModel = formaPagamentoModelAssembler
-				.toCollectionModel(todasFormasPagamentos);
-		
+
+		CollectionModel<FormaPagamentoModel> formasPagamentosModel =
+				formaPagamentoModelAssembler.toCollectionModel(todasFormasPagamentos);
+
 		return ResponseEntity.ok()
 				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
 				.eTag(eTag)
-				.body(formasPagamentoModel);
+				.body(formasPagamentosModel);
 	}
 	
 	@GetMapping(path = "/{formaPagamentoId}" , produces = MediaType.APPLICATION_JSON_VALUE)
