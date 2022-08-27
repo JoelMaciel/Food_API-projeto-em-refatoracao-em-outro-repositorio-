@@ -33,36 +33,42 @@ public class RestauranteModelAssembler
         
         restauranteModel.add(foodLinks.linkToRestaurantes("restaurantes"));
         
+        if (restaurante.ativacaoPermitida()) {
+            restauranteModel.add(
+                    foodLinks.linkToRestauranteAtivacao(restaurante.getId(), "ativar"));
+        }
+
+        if (restaurante.inativacaoPermitida()) {
+            restauranteModel.add(
+                    foodLinks.linkToRestauranteInativacao(restaurante.getId(), "inativar"));
+        }
+
+        if (restaurante.aberturaPermitida()) {
+            restauranteModel.add(
+                    foodLinks.linkToRestauranteAbertura(restaurante.getId(), "abrir"));
+        }
+
+        if (restaurante.fechamentoPermitido()) {
+            restauranteModel.add(
+                    foodLinks.linkToRestauranteFechamento(restaurante.getId(), "fechar"));
+        }
+        
+        restauranteModel.add(foodLinks.linkToProdutos(restaurante.getId(), "produtos"));
+        
         restauranteModel.getCozinha().add(
                 foodLinks.linkToCozinha(restaurante.getCozinha().getId()));
         
-        restauranteModel.getEndereco().getCidade().add(
-                foodLinks.linkToCidade(restaurante.getEndereco().getCidade().getId()));
+        if (restauranteModel.getEndereco() != null 
+                && restauranteModel.getEndereco().getCidade() != null) {
+            restauranteModel.getEndereco().getCidade().add(
+                    foodLinks.linkToCidade(restaurante.getEndereco().getCidade().getId()));
+        }
         
         restauranteModel.add(foodLinks.linkToRestauranteFormasPagamento(restaurante.getId(), 
                 "formas-pagamento"));
         
         restauranteModel.add(foodLinks.linkToRestauranteResponsaveis(restaurante.getId(), 
                 "responsaveis"));
-        if (restaurante.ativacaoPermitida()) {
-        	restauranteModel.add(
-        			foodLinks.linkToRestauranteAtivacao(restaurante.getId(), "ativar"));
-        }
-
-        if (restaurante.inativacaoPermitida()) {
-        	restauranteModel.add(
-        			foodLinks.linkToRestauranteInativacao(restaurante.getId(), "inativar"));
-        }
-
-        if (restaurante.aberturaPermitida()) {
-        	restauranteModel.add(
-        			foodLinks.linkToRestauranteAbertura(restaurante.getId(), "abrir"));
-        }
-
-        if (restaurante.fechamentoPermitido()) {
-        	restauranteModel.add(
-        			foodLinks.linkToRestauranteFechamento(restaurante.getId(), "fechar"));
-        }
         
         return restauranteModel;
     }

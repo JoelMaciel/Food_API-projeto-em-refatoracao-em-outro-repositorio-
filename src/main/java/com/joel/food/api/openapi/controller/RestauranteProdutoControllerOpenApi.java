@@ -1,6 +1,6 @@
 package com.joel.food.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 import com.joel.food.api.exceptionhandler.Problem;
 import com.joel.food.api.model.ProdutoModel;
@@ -24,13 +24,13 @@ public interface RestauranteProdutoControllerOpenApi {
         @ApiResponse(responseCode = "400", description = "Restaurante não encontrado",
         content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    List<ProdutoModel> listar(
+    CollectionModel<ProdutoModel>  listar(
             @ApiParam(value = "ID do restaurante", example = "1", required = true)
             Long restauranteId,
             
             @ApiParam(value = "Indica se deve ou não incluir produtos inativos no resultado da listagem", 
                 example = "false", defaultValue = "false")
-            boolean incluirInativos);
+            Boolean incluirInativos);
 
     @ApiOperation("Busca um produto de um restaurante")
     @ApiResponses({
