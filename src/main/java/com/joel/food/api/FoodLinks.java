@@ -16,6 +16,8 @@ import com.joel.food.api.controller.CozinhaController;
 import com.joel.food.api.controller.EstadoController;
 import com.joel.food.api.controller.FluxoPedidoController;
 import com.joel.food.api.controller.FormaPagamentoController;
+import com.joel.food.api.controller.GrupoController;
+import com.joel.food.api.controller.GrupoPermissaoController;
 import com.joel.food.api.controller.PedidoController;
 import com.joel.food.api.controller.RestauranteController;
 import com.joel.food.api.controller.RestauranteFormaPagamentoController;
@@ -264,5 +266,18 @@ public class FoodLinks {
 	public Link linkToFotoProduto(Long restauranteId, Long produtoId) {
 	    return linkToFotoProduto(restauranteId, produtoId, IanaLinkRelations.SELF.value());
 	}
+	
+	public Link linkToGrupos(String rel) {
+	    return linkTo(GrupoController.class).withRel(rel);
+	}
+
+	public Link linkToGrupos() {
+	    return linkToGrupos(IanaLinkRelations.SELF.value());
+	}
+
+	public Link linkToGrupoPermissoes(Long grupoId, String rel) {
+	    return linkTo(methodOn(GrupoPermissaoController.class)
+	            .listar(grupoId)).withRel(rel);
+	}  
 
 }
