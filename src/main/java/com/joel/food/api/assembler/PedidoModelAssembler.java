@@ -32,7 +32,7 @@ public class PedidoModelAssembler
         pedidoModel.add(foodLinks.linkToPedidos("pedidos"));
         
         if(pedido.podeSerConfirmado()) {
-        	pedidoModel.add(foodLinks.linkToConfirmaçaoPedido(pedido.getCodigo(), "confirmar"));        	
+        	pedidoModel.add(foodLinks.linkToConfirmacaoPedido(pedido.getCodigo(), "confirmar"));        	
         }
         
         if(pedido.podeSerCancelado()) {

@@ -42,7 +42,7 @@ public class RestauranteModelAssembler
         restauranteModel.add(foodLinks.linkToRestauranteFormasPagamento(restaurante.getId(), 
                 "formas-pagamento"));
         
-        restauranteModel.add(foodLinks.linkToResponsaveisRestaurante(restaurante.getId(), 
+        restauranteModel.add(foodLinks.linkToRestauranteResponsaveis(restaurante.getId(), 
                 "responsaveis"));
         if (restaurante.ativacaoPermitida()) {
         	restauranteModel.add(

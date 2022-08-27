@@ -73,7 +73,7 @@ public class CadastroRestauranteService {
 	}
 	
 	@Transactional
-	public void desassociarResponsvel(Long restauranteId, Long usuarioId) {
+	public void desassociarResponsavel(Long restauranteId, Long usuarioId) {
 		Restaurante restaurante = buscarOuFalhar(restauranteId);
 		
 		Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);

@@ -1,6 +1,7 @@
 package com.joel.food.api.openapi.controller;
 
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 import com.joel.food.api.exceptionhandler.Problem;
 import com.joel.food.api.model.UsuarioModel;
@@ -30,7 +31,7 @@ public interface RestauranteUsuarioResponsavelControllerOpenApi {
         @ApiResponse(responseCode = "404", description = "Restaurante ou usuário não encontrado", 
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    void desassociar(
+    ResponseEntity<Void> desassociar(
             @ApiParam(value = "ID do restaurante", example = "1", required = true)
             Long restauranteId,
             
@@ -43,7 +44,7 @@ public interface RestauranteUsuarioResponsavelControllerOpenApi {
         @ApiResponse(responseCode = "404", description = "Restaurante ou usuário não encontrado", 
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    void associar(
+    ResponseEntity<Void> associar(
             @ApiParam(value = "ID do restaurante", example = "1", required = true)
             Long restauranteId,
             
