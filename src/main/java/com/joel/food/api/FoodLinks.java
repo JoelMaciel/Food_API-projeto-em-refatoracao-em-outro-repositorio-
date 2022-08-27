@@ -20,6 +20,7 @@ import com.joel.food.api.controller.PedidoController;
 import com.joel.food.api.controller.RestauranteController;
 import com.joel.food.api.controller.RestauranteFormaPagamentoController;
 import com.joel.food.api.controller.RestauranteProdutoController;
+import com.joel.food.api.controller.RestauranteProdutoFotoController;
 import com.joel.food.api.controller.RestauranteUsuarioResponsavelController;
 import com.joel.food.api.controller.UsuarioController;
 import com.joel.food.api.controller.UsuarioGrupoController;
@@ -254,6 +255,14 @@ public class FoodLinks {
 
 	public Link linkToProdutos(Long restauranteId) {
 	    return linkToProdutos(restauranteId, IanaLinkRelations.SELF.value());
+	}
+	public Link linkToFotoProduto(Long restauranteId, Long produtoId, String rel) {
+	    return linkTo(methodOn(RestauranteProdutoFotoController.class)
+	            .buscar(restauranteId, produtoId)).withRel(rel);
+	}
+
+	public Link linkToFotoProduto(Long restauranteId, Long produtoId) {
+	    return linkToFotoProduto(restauranteId, produtoId, IanaLinkRelations.SELF.value());
 	}
 
 }
