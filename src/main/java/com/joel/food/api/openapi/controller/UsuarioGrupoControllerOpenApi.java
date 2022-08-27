@@ -1,6 +1,7 @@
 package com.joel.food.api.openapi.controller;
 
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 import com.joel.food.api.exceptionhandler.Problem;
 import com.joel.food.api.model.GrupoModel;
@@ -30,7 +31,7 @@ public interface UsuarioGrupoControllerOpenApi {
         @ApiResponse(responseCode = "404", description = "Usuário ou grupo não encontrado", 
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    void desassociar(
+    ResponseEntity<Void> desassociar(
             @ApiParam(value = "ID do usuário", example = "1", required = true)
             Long usuarioId,
             
@@ -43,7 +44,7 @@ public interface UsuarioGrupoControllerOpenApi {
         @ApiResponse(responseCode = "404", description = "Usuário ou grupo não encontrado", 
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    void associar(
+    ResponseEntity<Void> associar(
             @ApiParam(value = "ID do usuário", example = "1", required = true)
             Long usuarioId,
             
