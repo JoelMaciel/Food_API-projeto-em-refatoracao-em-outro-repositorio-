@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.Links;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,6 +26,7 @@ import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.joel.food.api.exceptionhandler.Problem;
 import com.joel.food.api.model.PedidoResumoModel;
+import com.joel.food.api.openapi.model.LinksModelOpenApi;
 import com.joel.food.api.openapi.model.PageableModelOpenApi;
 import com.joel.food.api.openapi.model.PedidosResumoModelOpenApi;
 
@@ -68,6 +70,7 @@ public class SpringFoxConfig {
 						URL.class, URI.class, URLStreamHandler.class, Resource.class,
 						File.class, InputStream.class)
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+				.directModelSubstitute(Links.class, LinksModelOpenApi.class)
 				.alternateTypeRules(AlternateTypeRules.newRule(
 						typeResolver.resolve(Page.class, PedidoResumoModel.class),
 						PedidosResumoModelOpenApi.class))
