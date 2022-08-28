@@ -69,13 +69,14 @@ import springfox.documentation.spring.web.plugins.Docket;
 public class SpringFoxConfig {
 
 	 @Bean
-	  public Docket apiDocket() {
+	  public Docket apiDocketV1() {
 		 var typeResolver = new TypeResolver();
 		 
 	    return new Docket(DocumentationType.OAS_30)
+	    		 .groupName("V1")
 	    		.select()
 				.apis(RequestHandlerSelectors.basePackage("com.joel.food.api"))
-				.paths(PathSelectors.any())
+				.paths(PathSelectors.ant("/v1/**"))
 				.build()
 				.useDefaultResponseMessages(false)
 				.globalResponses(HttpMethod.GET, globalGetResponseMessages())
@@ -119,7 +120,7 @@ public class SpringFoxConfig {
 					.alternateTypeRules(AlternateTypeRules.newRule(
 					        typeResolver.resolve(CollectionModel.class, PermissaoModel.class),
 					        PermissoesModelOpenApi.class))
-				.apiInfo(apiInfo())
+				.apiInfo(apiInfoV1())
 				.tags(new Tag("Cidades", "Gerencia as cidades"),
 						new Tag("Grupos", "Gerencia os grupos de usuários"),
 						new Tag("Cozinhas", "Gerencia as cozinhas"),
@@ -135,6 +136,31 @@ public class SpringFoxConfig {
 
 	        
 	  }
+	 
+	    @Bean
+		public Docket apiDocketV2() {
+			var typeResolver = new TypeResolver();
+
+			return new Docket(DocumentationType.OAS_30)
+					.groupName("V2")
+					.select()
+					.apis(RequestHandlerSelectors.basePackage("com.joel.food.api"))
+					.paths(PathSelectors.ant("/v2/**"))
+					.build()
+					.useDefaultResponseMessages(false)
+					.globalResponses(HttpMethod.GET, globalGetResponseMessages())
+					.globalResponses(HttpMethod.POST, globalPostPutResponseMessages())
+					.globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
+					.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
+					.additionalModels(typeResolver.resolve(Problem.class))
+					.ignoredParameterTypes(ServletWebRequest.class,
+							URL.class, URI.class, URLStreamHandler.class, Resource.class,
+							File.class, InputStream.class)
+					.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+					.directModelSubstitute(Links.class, LinksModelOpenApi.class)
+
+					.apiInfo(apiInfoV2());
+		}
 	 
 	 private List<Response> globalGetResponseMessages() {
 		    return Arrays.asList(
@@ -202,7 +228,7 @@ public class SpringFoxConfig {
 	                    q -> q.name("Problema").namespace("com.joel.food.api.exceptionhandler")))));
 	}
 
-	private ApiInfo apiInfo() {
+	private ApiInfo apiInfoV1() {
 		return new ApiInfoBuilder()
 				.title("Joel_Food API")
 				.description("API aberta para clientes e restaurantes")
@@ -210,6 +236,16 @@ public class SpringFoxConfig {
 				.contact(new Contact("Joel Maciel",
 						"https://www.linkedin.com/in/joel-maciel-dev-java-back-end-spring-framework",
 						 "jmviana37@gmail.com"))
+				.build();
+	}
+	private ApiInfo apiInfoV2() {
+		return new ApiInfoBuilder()
+				.title("Joel_Food API")
+				.description("API aberta para clientes e restaurantes")
+				.version("2")
+				.contact(new Contact("Joel Maciel",
+						"https://www.linkedin.com/in/joel-maciel-dev-java-back-end-spring-framework",
+						"jmviana37@gmail.com"))
 				.build();
 	}
 	
