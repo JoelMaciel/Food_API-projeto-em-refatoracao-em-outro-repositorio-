@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.joel.food.api.v1.FoodLinks;
 
+
 @RestController
 @RequestMapping(path = "/v1" , produces = MediaType.APPLICATION_JSON_VALUE )
 public class RootEntryPointController {
