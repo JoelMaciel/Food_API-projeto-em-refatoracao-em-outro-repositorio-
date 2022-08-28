@@ -12,13 +12,8 @@ import com.joel.food.api.v2.model.CidadeModelV2;
 import com.joel.food.domain.model.Cidade;
 
 @Component
-public class CidadeModelAssemblerV2  extends 
-RepresentationModelAssemblerSupport<Cidade, CidadeModelV2>{
-
-	public CidadeModelAssemblerV2() {
-		super(CidadeControllerV2.class, CidadeModelV2.class);
-		
-	}
+public class CidadeModelAssemblerV2 
+		extends RepresentationModelAssemblerSupport<Cidade, CidadeModelV2> {
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -26,6 +21,11 @@ RepresentationModelAssemblerSupport<Cidade, CidadeModelV2>{
 	@Autowired
 	private FoodLinksV2 foodLinks;
 	
+	public CidadeModelAssemblerV2() {
+		super(CidadeControllerV2.class, CidadeModelV2.class);
+	}
+	
+	@Override
 	public CidadeModelV2 toModel(Cidade cidade) {
 		CidadeModelV2 cidadeModel = createModelWithId(cidade.getId(), cidade);
 		
@@ -33,17 +33,15 @@ RepresentationModelAssemblerSupport<Cidade, CidadeModelV2>{
 		
 		cidadeModel.add(foodLinks.linkToCidades("cidades"));
 		
-		
 		return cidadeModel;
 	}
+	
 	@Override
 	public CollectionModel<CidadeModelV2> toCollectionModel(Iterable<? extends Cidade> entities) {
 		return super.toCollectionModel(entities)
-				 .add(foodLinks.linkToCidades());
-
+				.add(foodLinks.linkToCidades());
 	}
 	
 }
-
 
 

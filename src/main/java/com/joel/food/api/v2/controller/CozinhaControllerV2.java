@@ -23,6 +23,7 @@ import com.joel.food.api.v2.assembler.CozinhaInputDisassemblerV2;
 import com.joel.food.api.v2.assembler.CozinhaModelAssemblerV2;
 import com.joel.food.api.v2.model.CozinhaModelV2;
 import com.joel.food.api.v2.model.input.CozinhaInputV2;
+import com.joel.food.api.v2.openapi.controller.CozinhaControllerV2OpenApi;
 import com.joel.food.domain.model.Cozinha;
 import com.joel.food.domain.repository.CozinhaRepository;
 import com.joel.food.domain.service.CadastroCozinhaService;
@@ -31,7 +32,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping(value = "/v2/cozinhas", produces = MediaType.APPLICATION_JSON_VALUE)
-public class CozinhaControllerV2 {
+public class CozinhaControllerV2 implements CozinhaControllerV2OpenApi {
 
     @Autowired
     private CozinhaRepository cozinhaRepository;

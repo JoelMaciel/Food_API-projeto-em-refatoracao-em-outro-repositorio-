@@ -23,6 +23,7 @@ import com.joel.food.api.v2.assembler.CidadeInputDisassemblerV2;
 import com.joel.food.api.v2.assembler.CidadeModelAssemblerV2;
 import com.joel.food.api.v2.model.CidadeModelV2;
 import com.joel.food.api.v2.model.input.CidadeInputV2;
+import com.joel.food.api.v2.openapi.controller.CidadeControllerV2OpenApi;
 import com.joel.food.domain.exception.EstadoNaoEncontradoException;
 import com.joel.food.domain.exception.NegocioException;
 import com.joel.food.domain.model.Cidade;
@@ -31,7 +32,7 @@ import com.joel.food.domain.service.CadastroCidadeService;
 
 @RestController
 @RequestMapping(path = "/v2/cidades")
-public class CidadeControllerV2  {
+public class CidadeControllerV2 implements CidadeControllerV2OpenApi {
 
 	@Autowired
 	private CidadeModelAssemblerV2 cidadeModelAssembler;

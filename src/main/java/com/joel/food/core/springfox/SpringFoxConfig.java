@@ -48,6 +48,10 @@ import com.joel.food.api.v1.openapi.model.PermissoesModelOpenApi;
 import com.joel.food.api.v1.openapi.model.ProdutosModelOpenApi;
 import com.joel.food.api.v1.openapi.model.RestaurantesBasicoModelOpenApi;
 import com.joel.food.api.v1.openapi.model.UsuariosModelOpenApi;
+import com.joel.food.api.v2.model.CidadeModelV2;
+import com.joel.food.api.v2.model.CozinhaModelV2;
+import com.joel.food.api.v2.openapi.model.CidadesModelV2OpenApi;
+import com.joel.food.api.v2.openapi.model.CozinhasModelV2OpenApi;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -158,8 +162,16 @@ public class SpringFoxConfig {
 							File.class, InputStream.class)
 					.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 					.directModelSubstitute(Links.class, LinksModelOpenApi.class)
-
-					.apiInfo(apiInfoV2());
+					.alternateTypeRules(AlternateTypeRules.newRule(
+						    typeResolver.resolve(PagedModel.class, CozinhaModelV2.class),
+						    CozinhasModelV2OpenApi.class))
+						.alternateTypeRules(AlternateTypeRules.newRule(
+						        typeResolver.resolve(CollectionModel.class, CidadeModelV2.class),
+						        CidadesModelV2OpenApi.class))
+						.apiInfo(apiInfoV2())
+						        
+						.tags(new Tag("Cidades", "Gerencia as cidades"),
+						        new Tag("Cozinhas", "Gerencia as cozinhas"));
 		}
 	 
 	 private List<Response> globalGetResponseMessages() {
@@ -230,8 +242,10 @@ public class SpringFoxConfig {
 
 	private ApiInfo apiInfoV1() {
 		return new ApiInfoBuilder()
-				.title("Joel_Food API")
-				.description("API aberta para clientes e restaurantes")
+				.title("Joel_Food API (Depreciada)")
+				.description("API aberta para clientes e restaurantes.<br>"
+						+ "<strong> Essa versão da API está depreciada e deixará de existir a partir de 30/12/2022."
+						+  " Use a versão mais atual da API.")
 				.version("1")
 				.contact(new Contact("Joel Maciel",
 						"https://www.linkedin.com/in/joel-maciel-dev-java-back-end-spring-framework",
