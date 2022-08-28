@@ -19,7 +19,7 @@ import com.joel.food.domain.model.dto.VendaDiaria;
 import com.joel.food.domain.service.VendaQueryService;
 import com.joel.food.domain.service.VendaReportService;
 
-@RequestMapping(path = "/estatisticas")
+@RequestMapping(path = "/v1/estatisticas")
 @RestController
 public class EstatisticasController  implements EstatisticasControllerOpenApi{
 	

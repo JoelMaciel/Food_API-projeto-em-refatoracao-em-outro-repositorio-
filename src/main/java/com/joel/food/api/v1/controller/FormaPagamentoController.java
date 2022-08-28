@@ -34,7 +34,7 @@ import com.joel.food.domain.repository.FormaPagamentoRepository;
 import com.joel.food.domain.service.CadastroFormaPagamentoService;
 
 @RestController
-@RequestMapping("/formas-pagamento")
+@RequestMapping("/v1/formas-pagamento")
 public class FormaPagamentoController implements FormaPagamentoControllerOpenApi{
 	
 	@Autowired

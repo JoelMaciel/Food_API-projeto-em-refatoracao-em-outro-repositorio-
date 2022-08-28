@@ -30,7 +30,7 @@ import com.joel.food.domain.repository.CidadeRepository;
 import com.joel.food.domain.service.CadastroCidadeService;
 
 @RestController
-@RequestMapping(path = "/v2/cidades" , produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v2/cidades")
 public class CidadeControllerV2  {
 
 	@Autowired
@@ -55,7 +55,7 @@ public class CidadeControllerV2  {
 
 	}
 
-	@GetMapping(path = "/{cidadeId}")
+	@GetMapping(path = "/{cidadeId}" , produces = MediaType.APPLICATION_JSON_VALUE)
 	public CidadeModelV2 buscar(@PathVariable Long cidadeId) {
 
 		Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
@@ -88,7 +88,7 @@ public class CidadeControllerV2  {
 
 	}
 
-	@PutMapping(path = "/{cidadeId}")
+	@PutMapping(path = "/{cidadeId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CidadeModelV2 atualizar(@PathVariable Long cidadeId,
 			@RequestBody @Valid CidadeInputV2 cidadeInput) {
 

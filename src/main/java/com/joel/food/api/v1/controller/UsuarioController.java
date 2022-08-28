@@ -29,7 +29,7 @@ import com.joel.food.domain.repository.UsuarioRepository;
 import com.joel.food.domain.service.CadastroUsuarioService;
 
 @RestController
-@RequestMapping(value = "/usuarios" , produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v1/usuarios" , produces = MediaType.APPLICATION_JSON_VALUE)
 public class UsuarioController  implements UsuarioControllerOpenApi{
 	
 	@Autowired

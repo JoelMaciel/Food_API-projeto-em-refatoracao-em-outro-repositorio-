@@ -43,7 +43,7 @@ import io.swagger.annotations.ApiOperation;
 
 
 @RestController
-@RequestMapping(value = "/restaurantes")
+@RequestMapping(value = "/v1/restaurantes")
 public class RestauranteController implements RestauranteControllerOpenApi {
 
 	@Autowired

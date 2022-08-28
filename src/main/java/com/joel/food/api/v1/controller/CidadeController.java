@@ -31,7 +31,7 @@ import com.joel.food.domain.repository.CidadeRepository;
 import com.joel.food.domain.service.CadastroCidadeService;
 
 @RestController
-@RequestMapping(path = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/cidades")
 public class CidadeController implements CidadeControllerOpenApi {
 
 	@Autowired
@@ -46,7 +46,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 	@Autowired
 	private CidadeRepository cidadeRepository;
 
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public CollectionModel<CidadeModel> listar() {
 		List<Cidade> todasCidades = cidadeRepository.findAll();
 
@@ -56,7 +56,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 	}
 
-	@GetMapping(path = "/{cidadeId}")
+	@GetMapping(path = "/{cidadeId}" , produces = MediaType.APPLICATION_JSON_VALUE)
 	public CidadeModel buscar(@PathVariable Long cidadeId) {
 
 		Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
@@ -89,7 +89,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 	}
 
-	@PutMapping(path = "/{cidadeId}")
+	@PutMapping(path = "/{cidadeId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CidadeModel atualizar(@PathVariable Long cidadeId,
 			@RequestBody @Valid CidadeInput cidadeInput) {
 

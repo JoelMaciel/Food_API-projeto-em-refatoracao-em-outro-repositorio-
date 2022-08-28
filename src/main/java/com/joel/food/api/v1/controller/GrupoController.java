@@ -28,7 +28,7 @@ import com.joel.food.domain.repository.GrupoRepository;
 import com.joel.food.domain.service.CadastroGrupoService;
 
 @RestController
-@RequestMapping("/grupos")
+@RequestMapping("/v1/grupos")
 public class GrupoController implements GrupoControllerOpenApi {
 	
 	@Autowired
