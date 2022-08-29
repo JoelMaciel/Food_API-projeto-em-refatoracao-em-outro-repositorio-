@@ -29,10 +29,12 @@ import com.joel.food.domain.model.Cozinha;
 import com.joel.food.domain.repository.CozinhaRepository;
 import com.joel.food.domain.service.CadastroCozinhaService;
 
+//@Slf4j
 @RestController
 @RequestMapping(path = "/v1/cozinhas" , produces = MediaType.APPLICATION_JSON_VALUE)
 public class CozinhaController implements CozinhaControllerOpenApi {
 
+	
 	@Autowired
 	private CozinhaModelAssembler cozinhaModelAssembler;
 
@@ -50,10 +52,18 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public PagedModel<CozinhaModel> listar(@PageableDefault(size = 10) Pageable pageable ) {
+		
+//		if(true) {
+//			throw new RuntimeException("Teste de exception");
+//		}
+		
 		Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
+		
+		
 		
 		PagedModel<CozinhaModel> cozinhasPagedModel = pageResourceAssembler
 				.toModel(cozinhasPage, cozinhaModelAssembler);
+		
 		
 		return cozinhasPagedModel;
 	}
