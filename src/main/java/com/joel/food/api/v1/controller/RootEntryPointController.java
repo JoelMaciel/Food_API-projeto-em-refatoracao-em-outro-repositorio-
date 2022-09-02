@@ -8,36 +8,61 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.joel.food.api.v1.FoodLinks;
-
+import com.joel.food.core.security.FoodSecurity;
 
 @RestController
-@RequestMapping(path = "/v1" , produces = MediaType.APPLICATION_JSON_VALUE )
+@RequestMapping(path = "/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RootEntryPointController {
-	
+
 	@Autowired
 	private FoodLinks foodLinks;
-	
+
+	@Autowired
+	private FoodSecurity foodSecurity;
+
 	@GetMapping
-	public  RootEntryPointModel root () {
+	public RootEntryPointModel root() {
 		var rootEntryPointModel = new RootEntryPointModel();
-		
-		rootEntryPointModel.add(foodLinks.linkToCozinhas("cozinhas"));
-		rootEntryPointModel.add(foodLinks.linkToCozinhas("gastronomias"));
-		rootEntryPointModel.add(foodLinks.linkToPedidos("pedidos"));
-		rootEntryPointModel.add(foodLinks.linkToRestaurantes("restaurantes"));
-		rootEntryPointModel.add(foodLinks.linkToGrupos("grupos"));
-		rootEntryPointModel.add(foodLinks.linkToUsuarios("usuarios"));
-		rootEntryPointModel.add(foodLinks.linkToPermissoes("permissoes"));
-		rootEntryPointModel.add(foodLinks.linkToFormasPagamento("formas-pagamento"));
-		rootEntryPointModel.add(foodLinks.linkToEstados("estados"));
-		rootEntryPointModel.add(foodLinks.linkToCidades("cidades"));
-		rootEntryPointModel.add(foodLinks.linkToEstatisticas("estatisticas"));
-		
-		
+
+		if (foodSecurity.podeConsultarCozinhas()) {
+			rootEntryPointModel.add(foodLinks.linkToCozinhas("cozinhas"));
+		}
+
+		if (foodSecurity.podePesquisarPedidos()) {
+			rootEntryPointModel.add(foodLinks.linkToPedidos("pedidos"));
+		}
+
+		if (foodSecurity.podeConsultarRestaurantes()) {
+			rootEntryPointModel.add(foodLinks.linkToRestaurantes("restaurantes"));
+		}
+
+		if (foodSecurity.podeConsultarUsuariosGruposPermissoes()) {
+			rootEntryPointModel.add(foodLinks.linkToGrupos("grupos"));
+			rootEntryPointModel.add(foodLinks.linkToUsuarios("usuarios"));
+			rootEntryPointModel.add(foodLinks.linkToPermissoes("permissoes"));
+		}
+
+		if (foodSecurity.podeConsultarFormasPagamento()) {
+			rootEntryPointModel.add(foodLinks.linkToFormasPagamento("formas-pagamento"));
+		}
+
+		if (foodSecurity.podeConsultarEstados()) {
+			rootEntryPointModel.add(foodLinks.linkToEstados("estados"));
+		}
+
+		if (foodSecurity.podeConsultarCidades()) {
+			rootEntryPointModel.add(foodLinks.linkToCidades("cidades"));
+		}
+
+		if (foodSecurity.podeConsultarEstatisticas()) {
+			rootEntryPointModel.add(foodLinks.linkToEstatisticas("estatisticas"));
+		}
+
 		return rootEntryPointModel;
 	}
-	private static class RootEntryPointModel extends RepresentationModel<RootEntryPointModel>{
-		
+
+	private static class RootEntryPointModel extends RepresentationModel<RootEntryPointModel> {
+
 	}
 
 }

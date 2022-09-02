@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.joel.food.api.v1.FoodLinks;
 import com.joel.food.api.v1.controller.RestauranteProdutoFotoController;
 import com.joel.food.api.v1.model.FotoProdutoModel;
+import com.joel.food.core.security.FoodSecurity;
 import com.joel.food.domain.model.FotoProduto;
 
 @Component
@@ -20,6 +21,9 @@ public class FotoProdutoModelAssembler
     @Autowired
     private FoodLinks foodLinks;
     
+    @Autowired
+    private FoodSecurity foodSecurity;
+    
     public FotoProdutoModelAssembler() {
         super(RestauranteProdutoFotoController.class, FotoProdutoModel.class);
     }
@@ -28,11 +32,14 @@ public class FotoProdutoModelAssembler
     public FotoProdutoModel toModel(FotoProduto foto) {
         FotoProdutoModel fotoProdutoModel = modelMapper.map(foto, FotoProdutoModel.class);
         
-        fotoProdutoModel.add(foodLinks.linkToFotoProduto(
-                foto.getRestauranteId(), foto.getProduto().getId()));
-        
-        fotoProdutoModel.add(foodLinks.linkToProduto(
-                foto.getRestauranteId(), foto.getProduto().getId(), "produto"));
+        // Quem pode consultar restaurantes, também pode consultar os produtos e fotos
+        if (foodSecurity.podeConsultarRestaurantes()) {
+            fotoProdutoModel.add(foodLinks.linkToFotoProduto(
+                    foto.getRestauranteId(), foto.getProduto().getId()));
+            
+            fotoProdutoModel.add(foodLinks.linkToProduto(
+                    foto.getRestauranteId(), foto.getProduto().getId(), "produto"));
+        }
         
         return fotoProdutoModel;
     }   

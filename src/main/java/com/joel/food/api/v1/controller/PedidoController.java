@@ -28,6 +28,8 @@ import com.joel.food.api.v1.model.PedidoResumoModel;
 import com.joel.food.api.v1.openapi.controller.PedidoControllerOpenApi;
 import com.joel.food.core.data.PageWrapper;
 import com.joel.food.core.data.PageableTranslator;
+import com.joel.food.core.security.CheckSecurity;
+import com.joel.food.core.security.FoodSecurity;
 import com.joel.food.domain.exception.EntidadeNaoEncontradaException;
 import com.joel.food.domain.exception.NegocioException;
 import com.joel.food.domain.filter.PedidoFilter;
@@ -62,6 +64,10 @@ public class PedidoController implements PedidoControllerOpenApi {
 	@Autowired
 	private PedidoInputDisassembler pedidoInputDisassembler;
 	
+	@Autowired
+	private FoodSecurity foodSecurity;
+	
+	@CheckSecurity.Pedidos.PodePesquisar
 	@ApiImplicitParams({
 		@ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
 				name = "campos", paramType = "query", type = "string" )
@@ -80,6 +86,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 	    return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoModelAssembler);
 	}
 	
+	@CheckSecurity.Pedidos.PodeBuscar
 	@ApiImplicitParams({
 		@ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
 				name = "campos", paramType = "query", type = "string" )
@@ -91,6 +98,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 		return pedidoModelAssembler.toModel(pedido);
 	}
 	
+	@CheckSecurity.Pedidos.PodeCriar
 	@PostMapping( produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public PedidoModel adicionar(@Valid @RequestBody PedidoInput pedidoInput) {
@@ -98,7 +106,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 			Pedido novoPedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
 			
 			novoPedido.setCliente(new Usuario());
-			novoPedido.getCliente().setId(1L);
+			novoPedido.getCliente().setId(foodSecurity.getUsuarioId());;
 			
 			novoPedido = emissaoPedido.emitir(novoPedido);
 			

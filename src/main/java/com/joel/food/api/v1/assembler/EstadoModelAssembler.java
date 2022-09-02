@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.joel.food.api.v1.FoodLinks;
 import com.joel.food.api.v1.controller.EstadoController;
 import com.joel.food.api.v1.model.EstadoModel;
+import com.joel.food.core.security.FoodSecurity;
 import com.joel.food.domain.model.Estado;
 
 @Component
@@ -21,6 +22,9 @@ public class EstadoModelAssembler
     @Autowired
     private FoodLinks foodLinks;
     
+    @Autowired
+    private FoodSecurity foodSecurity;
+    
     public EstadoModelAssembler() {
         super(EstadoController.class, EstadoModel.class);
     }
@@ -30,15 +34,23 @@ public class EstadoModelAssembler
         EstadoModel estadoModel = createModelWithId(estado.getId(), estado);
         modelMapper.map(estado, estadoModel);
         
-        estadoModel.add(foodLinks.linkToEstados("estados"));        
+        if (foodSecurity.podeConsultarEstados()) {
+            estadoModel.add(foodLinks.linkToEstados("estados"));
+        }
+        
         return estadoModel;
     }
-    
+
     @Override
     public CollectionModel<EstadoModel> toCollectionModel(Iterable<? extends Estado> entities) {
-        return super.toCollectionModel(entities)
-        		.add(foodLinks.linkToEstados());
-    }   
+        CollectionModel<EstadoModel> collectionModel = super.toCollectionModel(entities);
+        
+        if (foodSecurity.podeConsultarEstados()) {
+            collectionModel.add(foodLinks.linkToEstados());
+        }
+        
+        return collectionModel;
+    } 
 } 
 
 

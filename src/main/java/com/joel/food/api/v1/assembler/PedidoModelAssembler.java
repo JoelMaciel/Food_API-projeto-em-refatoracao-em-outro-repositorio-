@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.joel.food.api.v1.FoodLinks;
 import com.joel.food.api.v1.controller.PedidoController;
 import com.joel.food.api.v1.model.PedidoModel;
+import com.joel.food.core.security.FoodSecurity;
 import com.joel.food.domain.model.Pedido;
 
 @Component
@@ -19,6 +20,9 @@ public class PedidoModelAssembler
     
     @Autowired
     private FoodLinks foodLinks;
+    
+    @Autowired
+    private FoodSecurity foodSecurity;
 
     public PedidoModelAssembler() {
         super(PedidoController.class, PedidoModel.class);
@@ -29,37 +33,54 @@ public class PedidoModelAssembler
         PedidoModel pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
         modelMapper.map(pedido, pedidoModel);
         
-        pedidoModel.add(foodLinks.linkToPedidos("pedidos"));
-        
-        if(pedido.podeSerConfirmado()) {
-        	pedidoModel.add(foodLinks.linkToConfirmacaoPedido(pedido.getCodigo(), "confirmar"));        	
+        // Não usei o método foodSecurity.podePesquisarPedidos(clienteId, restauranteId) aqui,
+        // porque na geração do link, não temos o id do cliente e do restaurante, 
+        // então precisamos saber apenas se a requisição está autenticada e tem o escopo de leitura
+        if (foodSecurity.podePesquisarPedidos()) {
+            pedidoModel.add(foodLinks.linkToPedidos("pedidos"));
         }
         
-        if(pedido.podeSerCancelado()) {
-        	pedidoModel.add(foodLinks.linkToCancelamentoPedido(pedido.getCodigo(), "cancelar"));  	
+        if (foodSecurity.podeGerenciarPedidos(pedido.getCodigo())) {
+            if (pedido.podeSerConfirmado()) {
+                pedidoModel.add(foodLinks.linkToConfirmacaoPedido(pedido.getCodigo(), "confirmar"));
+            }
+            
+            if (pedido.podeSerCancelado()) {
+                pedidoModel.add(foodLinks.linkToCancelamentoPedido(pedido.getCodigo(), "cancelar"));
+            }
+            
+            if (pedido.podeSerEntregue()) {
+                pedidoModel.add(foodLinks.linkToEntregaPedido(pedido.getCodigo(), "entregar"));
+            }
         }
         
-        if(pedido.podeSerEntregue()) {
-        	pedidoModel.add(foodLinks.linkToEntregaPedido(pedido.getCodigo(), "entregar"));        	
+        if (foodSecurity.podeConsultarRestaurantes()) {
+            pedidoModel.getRestaurante().add(
+                    foodLinks.linkToRestaurante(pedido.getRestaurante().getId()));
         }
         
+        if (foodSecurity.podeConsultarUsuariosGruposPermissoes()) {
+            pedidoModel.getCliente().add(
+                    foodLinks.linkToUsuario(pedido.getCliente().getId()));
+        }
         
-        pedidoModel.getRestaurante().add(
-                foodLinks.linkToRestaurante(pedido.getRestaurante().getId()));
+        if (foodSecurity.podeConsultarFormasPagamento()) {
+            pedidoModel.getFormaPagamento().add(
+                    foodLinks.linkToFormaPagamento(pedido.getFormaPagamento().getId()));
+        }
         
-        pedidoModel.getCliente().add(
-                foodLinks.linkToUsuario(pedido.getCliente().getId()));
+        if (foodSecurity.podeConsultarCidades()) {
+            pedidoModel.getEnderecoEntrega().getCidade().add(
+                    foodLinks.linkToCidade(pedido.getEnderecoEntrega().getCidade().getId()));
+        }
         
-        pedidoModel.getFormaPagamento().add(
-                foodLinks.linkToFormaPagamento(pedido.getFormaPagamento().getId()));
-        
-        pedidoModel.getEnderecoEntrega().getCidade().add(
-                foodLinks.linkToCidade(pedido.getEnderecoEntrega().getCidade().getId()));
-        
-        pedidoModel.getItens().forEach(item -> {
-            item.add(foodLinks.linkToProduto(
-                    pedidoModel.getRestaurante().getId(), item.getProdutoId(), "produto"));
-        });
+        // Quem pode consultar restaurantes, também pode consultar os produtos dos restaurantes
+        if (foodSecurity.podeConsultarRestaurantes()) {
+            pedidoModel.getItens().forEach(item -> {
+                item.add(foodLinks.linkToProduto(
+                        pedidoModel.getRestaurante().getId(), item.getProdutoId(), "produto"));
+            });
+        }
         
         return pedidoModel;
     }

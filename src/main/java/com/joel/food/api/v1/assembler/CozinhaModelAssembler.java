@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.joel.food.api.v1.FoodLinks;
 import com.joel.food.api.v1.controller.CozinhaController;
 import com.joel.food.api.v1.model.CozinhaModel;
+import com.joel.food.core.security.FoodSecurity;
 import com.joel.food.domain.model.Cozinha;
 
 @Component
@@ -20,6 +21,9 @@ public class CozinhaModelAssembler  extends
 	@Autowired
 	private FoodLinks foodLinks;
 	
+	@Autowired
+	private FoodSecurity foodSecurity;
+	
 	public CozinhaModelAssembler() {
 		super(CozinhaController.class, CozinhaModel.class);
 		
@@ -27,13 +31,14 @@ public class CozinhaModelAssembler  extends
 
 	@Override
 	public CozinhaModel toModel(Cozinha cozinha) {
-		
-		CozinhaModel cozinhaModel = createModelWithId(cozinha.getId() , cozinha);
-		modelMapper.map(cozinha, cozinhaModel);
-		
-		cozinhaModel.add(foodLinks.linkToCozinhas("cozinhas"));
-		
-		return cozinhaModel;
+	    CozinhaModel cozinhaModel = createModelWithId(cozinha.getId(), cozinha);
+	    modelMapper.map(cozinha, cozinhaModel);
+	    
+	    if (foodSecurity.podeConsultarCozinhas()) {
+	        cozinhaModel.add(foodLinks.linkToCozinhas("cozinhas"));
+	    }
+	    
+	    return cozinhaModel;
 	}
 	
 	

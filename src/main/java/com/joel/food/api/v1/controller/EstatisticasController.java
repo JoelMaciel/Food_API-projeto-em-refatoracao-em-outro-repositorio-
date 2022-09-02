@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.joel.food.api.v1.FoodLinks;
 import com.joel.food.api.v1.openapi.controller.EstatisticasControllerOpenApi;
+import com.joel.food.core.security.CheckSecurity;
 import com.joel.food.domain.filter.VendaDiariaFilter;
 import com.joel.food.domain.model.dto.VendaDiaria;
 import com.joel.food.domain.service.VendaQueryService;
@@ -42,11 +43,14 @@ public class EstatisticasController  implements EstatisticasControllerOpenApi{
 	    return estatisticasModel;
 	}     
 	
+	@CheckSecurity.Estatisticas.PodeConsultar
 	@GetMapping(value = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro ,
 		@RequestParam(required = false, defaultValue = "+00:00")	String timeOffset) {
 		return vendaQueryService.consultarVendasDiarias(filtro, timeOffset);
 	}
+	
+	@CheckSecurity.Estatisticas.PodeConsultar
 	@GetMapping(value = "/vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE)
 	public ResponseEntity<byte[]> consultarVendasDiariasPdf(VendaDiariaFilter filtro ,
 			@RequestParam(required = false, defaultValue = "+00:00")	String timeOffset) {

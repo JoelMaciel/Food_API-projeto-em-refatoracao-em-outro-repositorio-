@@ -24,6 +24,7 @@ import com.joel.food.api.v1.assembler.CidadeInputDisassembler;
 import com.joel.food.api.v1.assembler.CidadeModelAssembler;
 import com.joel.food.api.v1.model.CidadeModel;
 import com.joel.food.api.v1.openapi.controller.CidadeControllerOpenApi;
+import com.joel.food.core.security.CheckSecurity;
 import com.joel.food.domain.exception.EstadoNaoEncontradoException;
 import com.joel.food.domain.exception.NegocioException;
 import com.joel.food.domain.model.Cidade;
@@ -46,7 +47,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 	@Autowired
 	private CidadeRepository cidadeRepository;
 
-	@Deprecated
+	@CheckSecurity.Cidades.PodeConsultar
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public CollectionModel<CidadeModel> listar() {
 		List<Cidade> todasCidades = cidadeRepository.findAll();
@@ -57,6 +58,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 	}
 
+	@CheckSecurity.Cidades.PodeConsultar
 	@GetMapping(path = "/{cidadeId}" , produces = MediaType.APPLICATION_JSON_VALUE)
 	public CidadeModel buscar(@PathVariable Long cidadeId) {
 
@@ -67,6 +69,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 		return cidadeModel;
 	}
 
+	@CheckSecurity.Cidades.PodeEditar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
@@ -90,6 +93,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 	}
 
+	@CheckSecurity.Cidades.PodeEditar
 	@PutMapping(path = "/{cidadeId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CidadeModel atualizar(@PathVariable Long cidadeId,
 			@RequestBody @Valid CidadeInput cidadeInput) {
@@ -108,6 +112,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 	}
 
+	@CheckSecurity.Cidades.PodeEditar
 	@DeleteMapping("/{cidadeId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long cidadeId) {

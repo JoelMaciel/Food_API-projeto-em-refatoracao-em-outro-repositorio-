@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.joel.food.api.v1.FoodLinks;
 import com.joel.food.api.v1.controller.RestauranteProdutoController;
 import com.joel.food.api.v1.model.ProdutoModel;
+import com.joel.food.core.security.FoodSecurity;
 import com.joel.food.domain.model.Produto;
 
 @Component
@@ -20,9 +21,14 @@ public class ProdutoModelAssembler
     @Autowired
     private FoodLinks foodLinks;
     
+    @Autowired
+    private FoodSecurity foodSecurity;
+    
     public ProdutoModelAssembler() {
         super(RestauranteProdutoController.class, ProdutoModel.class);
     }
+    
+    
     
     @Override
     public ProdutoModel toModel(Produto produto) {
@@ -30,6 +36,13 @@ public class ProdutoModelAssembler
                 produto.getId(), produto, produto.getRestaurante().getId());
         
         modelMapper.map(produto, produtoModel);
+        
+        if (foodSecurity.podeConsultarRestaurantes()) {
+        	produtoModel.add(foodLinks.linkToProdutos(produto.getRestaurante().getId(), "produtos"));
+
+        	produtoModel.add(foodLinks.linkToFotoProduto(
+        			produto.getRestaurante().getId(), produto.getId(), "foto"));
+        }
         
         produtoModel.add(foodLinks.linkToProdutos(produto.getRestaurante().getId(), "produtos"));
 

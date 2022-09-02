@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.joel.food.api.v1.FoodLinks;
 import com.joel.food.api.v1.controller.GrupoController;
 import com.joel.food.api.v1.model.GrupoModel;
+import com.joel.food.core.security.FoodSecurity;
 import com.joel.food.domain.model.Grupo;
 
 @Component
@@ -21,6 +22,9 @@ public class GrupoModelAssembler
     @Autowired
     private FoodLinks foodLinks;
     
+    @Autowired
+    private FoodSecurity foodSecurity;
+    
     public GrupoModelAssembler() {
         super(GrupoController.class, GrupoModel.class);
     }
@@ -30,16 +34,23 @@ public class GrupoModelAssembler
         GrupoModel grupoModel = createModelWithId(grupo.getId(), grupo);
         modelMapper.map(grupo, grupoModel);
         
-        grupoModel.add(foodLinks.linkToGrupos("grupos"));
-        
-        grupoModel.add(foodLinks.linkToGrupoPermissoes(grupo.getId(), "permissoes"));
+        if (foodSecurity.podeConsultarUsuariosGruposPermissoes()) {
+            grupoModel.add(foodLinks.linkToGrupos("grupos"));
+            
+            grupoModel.add(foodLinks.linkToGrupoPermissoes(grupo.getId(), "permissoes"));
+        }
         
         return grupoModel;
     }
-    
+
     @Override
     public CollectionModel<GrupoModel> toCollectionModel(Iterable<? extends Grupo> entities) {
-        return super.toCollectionModel(entities)
-                .add(foodLinks.linkToGrupos());
-    }            
+        CollectionModel<GrupoModel> collectionModel = super.toCollectionModel(entities);
+        
+        if (foodSecurity.podeConsultarUsuariosGruposPermissoes()) {
+            collectionModel.add(foodLinks.linkToGrupos());
+        }
+        
+        return collectionModel;
+    }        
 }        

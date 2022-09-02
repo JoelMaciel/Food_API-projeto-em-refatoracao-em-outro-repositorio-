@@ -29,6 +29,7 @@ import com.joel.food.api.v1.model.RestauranteBasicoModel;
 import com.joel.food.api.v1.model.RestauranteModel;
 import com.joel.food.api.v1.openapi.controller.RestauranteControllerOpenApi;
 import com.joel.food.api.v1.openapi.model.RestauranteBasicoModelOpenApi;
+import com.joel.food.core.security.CheckSecurity;
 import com.joel.food.domain.exception.CidadeNaoEncontradaException;
 import com.joel.food.domain.exception.CozinhaNaoEncontradaException;
 import com.joel.food.domain.exception.NegocioException;
@@ -70,12 +71,13 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 				name = "projeção", paramType = "query", type = "string")
 	})
 	
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public CollectionModel<RestauranteBasicoModel> listar() {
 		return restauranteBasicoModelAssembler.toCollectionModel(restauranteRepository.findAll());
 	}
 	
-	
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@ApiOperation(value = "Lista restaurantes" , hidden = true)
 	@GetMapping(params = "projecao=apenas-nome")
 	public CollectionModel<RestauranteApenasNomeModel> listarApenasNomes() {
@@ -84,6 +86,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 	}
 	
 
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping(value = "/{restauranteId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public RestauranteModel buscar(@PathVariable Long restauranteId) {
 
@@ -93,6 +96,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 
 	}
 
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
@@ -107,6 +111,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		}
 	}
 
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@PutMapping(path = "/{restauranteId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public RestauranteModel atualizar(@PathVariable Long restauranteId,
 			@RequestBody @Valid RestauranteInput restauranteInput) {
@@ -122,6 +127,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		}
 	}
 
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@PutMapping(path = "/{restauranteId}/ativo", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> ativar(@PathVariable Long restauranteId) {
@@ -129,6 +135,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		return ResponseEntity.noContent().build();
 	}
 
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@DeleteMapping("/{restauranteId}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> inativar(@PathVariable Long restauranteId) {
@@ -137,6 +144,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@PutMapping(path = "/ativacoes", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void ativarMultiplos(@RequestBody List<Long> restauranteIds) {
@@ -148,6 +156,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		}
 	}
 	
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@DeleteMapping(path = "/ativacoes", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void inativarMultiplos(@RequestBody List<Long> restauranteIds) {
@@ -158,6 +167,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		}
 	}
 	
+	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
 	@PutMapping(path = "/{restauranteId}/abertura" , produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> abrir(@PathVariable Long restauranteId) {
@@ -166,6 +176,7 @@ public class RestauranteController implements RestauranteControllerOpenApi {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
 	@PutMapping(path = "/{restauranteId}/fechamento", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void>fechar(@PathVariable Long restauranteId) {

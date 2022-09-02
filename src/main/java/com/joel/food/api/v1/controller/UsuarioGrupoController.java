@@ -16,6 +16,8 @@ import com.joel.food.api.v1.FoodLinks;
 import com.joel.food.api.v1.assembler.GrupoModelAssembler;
 import com.joel.food.api.v1.model.GrupoModel;
 import com.joel.food.api.v1.openapi.controller.UsuarioGrupoControllerOpenApi;
+import com.joel.food.core.security.CheckSecurity;
+import com.joel.food.core.security.FoodSecurity;
 import com.joel.food.domain.model.Usuario;
 import com.joel.food.domain.service.CadastroUsuarioService;
 
@@ -33,23 +35,33 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi{
 	@Autowired
 	private GrupoModelAssembler grupoModelAssembler;
 	
+	@Autowired
+	private FoodSecurity foodSecurity;
+	
+	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@Override
 	@GetMapping
 	public CollectionModel<GrupoModel> listar(@PathVariable Long usuarioId) {
 	    Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
 	    
 	    CollectionModel<GrupoModel> gruposModel = grupoModelAssembler.toCollectionModel(usuario.getGrupos())
-	            .removeLinks()
-	            .add(foodLinks.linkToUsuarioGrupoAssociacao(usuarioId, "associar"));
+	            .removeLinks();
 	    
-	    gruposModel.getContent().forEach(grupoModel -> {
-	        grupoModel.add(foodLinks.linkToUsuarioGrupoDesassociacao(
-	                usuarioId, grupoModel.getId(), "desassociar"));
-	    });
+	    if (foodSecurity.podeEditarUsuariosGruposPermissoes()) {
+	        gruposModel.add(foodLinks.linkToUsuarioGrupoAssociacao(usuarioId, "associar"));
+	        
+	        gruposModel.getContent().forEach(grupoModel -> {
+	            grupoModel.add(foodLinks.linkToUsuarioGrupoDesassociacao(
+	                    usuarioId, grupoModel.getId(), "desassociar"));
+	        });
+	    }
 	    
 	    return gruposModel;
-	}   
+	} 
 	
+	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@Override
 	@DeleteMapping("/{grupoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
@@ -59,6 +71,7 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi{
 	    return ResponseEntity.noContent().build();
 	}
 
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@Override
 	@PutMapping("/{grupoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)

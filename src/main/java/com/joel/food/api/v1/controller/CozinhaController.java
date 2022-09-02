@@ -25,6 +25,7 @@ import com.joel.food.api.v1.assembler.CozinhaInputDisassembler;
 import com.joel.food.api.v1.assembler.CozinhaModelAssembler;
 import com.joel.food.api.v1.model.CozinhaModel;
 import com.joel.food.api.v1.openapi.controller.CozinhaControllerOpenApi;
+import com.joel.food.core.security.CheckSecurity;
 import com.joel.food.domain.model.Cozinha;
 import com.joel.food.domain.repository.CozinhaRepository;
 import com.joel.food.domain.service.CadastroCozinhaService;
@@ -50,12 +51,9 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 	@Autowired
 	private CadastroCozinhaService cadastroCozinha;
 
+	@CheckSecurity.Cozinhas.PodeConsultar
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public PagedModel<CozinhaModel> listar(@PageableDefault(size = 10) Pageable pageable ) {
-		
-//		if(true) {
-//			throw new RuntimeException("Teste de exception");
-//		}
 		
 		Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
 		
@@ -68,6 +66,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 		return cozinhasPagedModel;
 	}
 
+	@CheckSecurity.Cozinhas.PodeConsultar
 	@GetMapping(path = "/{cozinhaId}" , produces = MediaType.APPLICATION_JSON_VALUE)
 	public CozinhaModel buscar(@PathVariable Long cozinhaId) {
 		Cozinha cozinha = cadastroCozinha.buscarOuFalhar(cozinhaId);
@@ -75,7 +74,8 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 		return cozinhaModelAssembler.toModel(cozinha);
 
 	}
-
+	
+	@CheckSecurity.Cozinhas.PodeEditar
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public CozinhaModel adicionar(@RequestBody @Valid CozinhaInput cozinhaInput) {
@@ -85,6 +85,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 		return cozinhaModelAssembler.toModel(cozinha);
 	}
 
+	@CheckSecurity.Cozinhas.PodeEditar
 	@PutMapping(path = "{cozinhaId}" , produces = MediaType.APPLICATION_JSON_VALUE)
 	public CozinhaModel atualizar(@PathVariable Long cozinhaId, @RequestBody @Valid CozinhaInput cozinhaInput) {
 
@@ -98,6 +99,8 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 
 	}
 
+	@CheckSecurity.Cozinhas.PodeEditar
+	@Override
 	@DeleteMapping("/{cozinhaId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long cozinhaId) {

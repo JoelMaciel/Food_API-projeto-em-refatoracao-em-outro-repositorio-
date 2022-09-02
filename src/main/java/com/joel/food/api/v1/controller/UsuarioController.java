@@ -24,6 +24,7 @@ import com.joel.food.api.v1.assembler.UsuarioInputDisassembler;
 import com.joel.food.api.v1.assembler.UsuarioModelAssembler;
 import com.joel.food.api.v1.model.UsuarioModel;
 import com.joel.food.api.v1.openapi.controller.UsuarioControllerOpenApi;
+import com.joel.food.core.security.CheckSecurity;
 import com.joel.food.domain.model.Usuario;
 import com.joel.food.domain.repository.UsuarioRepository;
 import com.joel.food.domain.service.CadastroUsuarioService;
@@ -44,12 +45,14 @@ public class UsuarioController  implements UsuarioControllerOpenApi{
 	@Autowired
 	private UsuarioInputDisassembler usuarioInputDisassembler;
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping
 	public CollectionModel<UsuarioModel> listar(){
 		List<Usuario> todosUsuarios = usuarioRepository.findAll();
 		return usuarioModelAssembler.toCollectionModel(todosUsuarios);
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping("/{usuarioId}")
 	public UsuarioModel buscar(@PathVariable Long usuarioId) {
 		Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
@@ -57,6 +60,7 @@ public class UsuarioController  implements UsuarioControllerOpenApi{
 		return usuarioModelAssembler.toModel(usuario);
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeEditar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public UsuarioModel adicionar(@RequestBody @Valid UsuarioComSenhaInput usuarioInput) {
@@ -66,6 +70,7 @@ public class UsuarioController  implements UsuarioControllerOpenApi{
 		return usuarioModelAssembler.toModel(usuario);
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeAlterarUsuario
 	@PutMapping("{usuarioId}")
 	public UsuarioModel atualizar(@PathVariable Long usuarioId, @RequestBody @Valid UsuarioInput usuarioInput) {
 		Usuario usuarioAtual = cadastroUsuario.buscarOuFalhar(usuarioId);
@@ -75,6 +80,7 @@ public class UsuarioController  implements UsuarioControllerOpenApi{
 		return usuarioModelAssembler.toModel(usuarioAtual);
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeAlterarPropriaSenha
 	@PutMapping("/{usuarioId}/senha")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void alterarSenha(@PathVariable Long usuarioId, @RequestBody @Valid SenhaInput senha) {

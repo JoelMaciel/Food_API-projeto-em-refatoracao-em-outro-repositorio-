@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.joel.food.api.v1.FoodLinks;
 import com.joel.food.api.v1.controller.FormaPagamentoController;
 import com.joel.food.api.v1.model.FormaPagamentoModel;
+import com.joel.food.core.security.FoodSecurity;
 import com.joel.food.domain.model.FormaPagamento;
 
 @Component
@@ -21,6 +22,9 @@ public class FormaPagamentoModelAssembler
     @Autowired
     private FoodLinks foodLinks;
     
+    @Autowired
+    private FoodSecurity foodSecurity;
+    
     public FormaPagamentoModelAssembler() {
         super(FormaPagamentoController.class, FormaPagamentoModel.class);
     }
@@ -32,16 +36,23 @@ public class FormaPagamentoModelAssembler
         
         modelMapper.map(formaPagamento, formaPagamentoModel);
         
-        formaPagamentoModel.add(foodLinks.linkToFormasPagamento("formasPagamento"));
+        if (foodSecurity.podeConsultarFormasPagamento()) {
+            formaPagamentoModel.add(foodLinks.linkToFormasPagamento("formasPagamento"));
+        }
         
         return formaPagamentoModel;
     }
-    
+
     @Override
     public CollectionModel<FormaPagamentoModel> toCollectionModel(Iterable<? extends FormaPagamento> entities) {
-        return super.toCollectionModel(entities)
-            .add(foodLinks.linkToFormasPagamento());
-    }   
+        CollectionModel<FormaPagamentoModel> collectionModel = super.toCollectionModel(entities);
+        
+        if (foodSecurity.podeConsultarFormasPagamento()) {
+            collectionModel.add(foodLinks.linkToFormasPagamento());
+        }
+            
+        return collectionModel;
+    }
 }
 
 

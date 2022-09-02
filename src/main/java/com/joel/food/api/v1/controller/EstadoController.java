@@ -23,6 +23,7 @@ import com.joel.food.api.v1.assembler.EstadoInputDisassembler;
 import com.joel.food.api.v1.assembler.EstadoModelAssembler;
 import com.joel.food.api.v1.model.EstadoModel;
 import com.joel.food.api.v1.openapi.controller.EstadoControllerOpenApi;
+import com.joel.food.core.security.CheckSecurity;
 import com.joel.food.domain.model.Estado;
 import com.joel.food.domain.repository.EstadoRepository;
 import com.joel.food.domain.service.CadastroEstadoService;
@@ -43,6 +44,7 @@ public class EstadoController implements EstadoControllerOpenApi {
 	@Autowired
 	private CadastroEstadoService cadastroEstado;
 
+	@CheckSecurity.Estados.PodeConsultar
 	@Override
 	@GetMapping
 	public CollectionModel<EstadoModel> listar() {
@@ -51,6 +53,7 @@ public class EstadoController implements EstadoControllerOpenApi {
 	    return estadoModelAssembler.toCollectionModel(todosEstados);
 	}
 
+	@CheckSecurity.Estados.PodeConsultar
 	@GetMapping("/{estadoId}")
 	public EstadoModel buscar(@PathVariable Long estadoId) {
 		
@@ -59,6 +62,7 @@ public class EstadoController implements EstadoControllerOpenApi {
 		return estadoModelAssembler.toModel(estado);
 	}
 
+	@CheckSecurity.Estados.PodeEditar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public EstadoModel adicionar(@RequestBody @Valid EstadoInput estadoInput) {
@@ -67,6 +71,7 @@ public class EstadoController implements EstadoControllerOpenApi {
 		return estadoModelAssembler.toModel(estado);
 	}
 
+	@CheckSecurity.Estados.PodeEditar
 	@PutMapping("/{estadoId}")
 	public EstadoModel atualizar(@PathVariable Long estadoId, @RequestBody @Valid EstadoInput estadoInput) {
 		Estado estadoAtual = cadastroEstado.buscarOuFalhar(estadoId);
@@ -78,6 +83,7 @@ public class EstadoController implements EstadoControllerOpenApi {
 
 	}
 
+	@CheckSecurity.Estados.PodeEditar
 	@DeleteMapping("/{estadoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long estadoId) {

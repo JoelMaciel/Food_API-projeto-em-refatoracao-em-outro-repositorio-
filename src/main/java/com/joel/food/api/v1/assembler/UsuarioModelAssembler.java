@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.joel.food.api.v1.FoodLinks;
 import com.joel.food.api.v1.controller.UsuarioController;
 import com.joel.food.api.v1.model.UsuarioModel;
+import com.joel.food.core.security.FoodSecurity;
 import com.joel.food.domain.model.Usuario;
 
 @Component
@@ -21,6 +22,9 @@ public class UsuarioModelAssembler
     @Autowired
     private FoodLinks foodLinks;
     
+    @Autowired
+    private FoodSecurity foodSecurity;
+    
     public UsuarioModelAssembler() {
         super(UsuarioController.class, UsuarioModel.class);
     }
@@ -29,6 +33,12 @@ public class UsuarioModelAssembler
     public UsuarioModel toModel(Usuario usuario) {
         UsuarioModel usuarioModel = createModelWithId(usuario.getId(), usuario);
         modelMapper.map(usuario, usuarioModel);
+        
+        if (foodSecurity.podeConsultarUsuariosGruposPermissoes()) {
+        	usuarioModel.add(foodLinks.linkToUsuarios("usuarios"));
+        	
+        	usuarioModel.add(foodLinks.linkToGruposUsuario(usuario.getId(), "grupos-usuario"));
+        }
         
         usuarioModel.add(foodLinks.linkToUsuarios("usuarios"));
         

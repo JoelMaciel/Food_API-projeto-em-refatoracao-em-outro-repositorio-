@@ -24,6 +24,7 @@ import com.joel.food.api.v1.assembler.ProdutoInputDisassembler;
 import com.joel.food.api.v1.assembler.ProdutoModelAssembler;
 import com.joel.food.api.v1.model.ProdutoModel;
 import com.joel.food.api.v1.openapi.controller.RestauranteProdutoControllerOpenApi;
+import com.joel.food.core.security.CheckSecurity;
 import com.joel.food.domain.model.Produto;
 import com.joel.food.domain.model.Restaurante;
 import com.joel.food.domain.repository.ProdutoRepository;
@@ -52,6 +53,7 @@ public class RestauranteProdutoController  implements RestauranteProdutoControll
 	@Autowired
 	private ProdutoInputDisassembler produtoInputDisassembler;
 
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping
 	public CollectionModel<ProdutoModel> listar(@PathVariable Long restauranteId,
 	        @RequestParam(required = false, defaultValue = "false") Boolean incluirInativos) {
@@ -68,7 +70,8 @@ public class RestauranteProdutoController  implements RestauranteProdutoControll
 	    return produtoModelAssembler.toCollectionModel(todosProdutos)
 	            .add(foodLinks.linkToProdutos(restauranteId));
 	}
-
+	
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping("/{produtoId}")
 	public ProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 		Produto produto = cadastroProduto.buscarOuFalhar(restauranteId, produtoId);
@@ -76,6 +79,7 @@ public class RestauranteProdutoController  implements RestauranteProdutoControll
 		return produtoModelAssembler.toModel(produto);
 	}
 
+	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ProdutoModel adicionar(@PathVariable Long restauranteId, @RequestBody @Valid ProdutoInput produtoInput) {
@@ -89,6 +93,7 @@ public class RestauranteProdutoController  implements RestauranteProdutoControll
 		return produtoModelAssembler.toModel(produto);
 	}
 
+	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
 	@PutMapping("/{produtoId}")
 	public ProdutoModel atualizar(@PathVariable Long restauranteId, @PathVariable Long produtoId,
 			@RequestBody @Valid ProdutoInput produtoInput) {

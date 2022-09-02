@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.joel.food.api.v1.FoodLinks;
 import com.joel.food.api.v1.model.PermissaoModel;
+import com.joel.food.core.security.FoodSecurity;
 import com.joel.food.domain.model.Permissao;
 
 @Component
@@ -19,6 +20,9 @@ public class PermissaoModelAssembler
     
     @Autowired
     private FoodLinks foodLinks;
+    
+    @Autowired
+    private FoodSecurity foodSecurity;
 
     @Override
     public PermissaoModel toModel(Permissao permissao) {
@@ -28,9 +32,15 @@ public class PermissaoModelAssembler
     
     @Override
     public CollectionModel<PermissaoModel> toCollectionModel(Iterable<? extends Permissao> entities) {
-        return RepresentationModelAssembler.super.toCollectionModel(entities)
-                .add(foodLinks.linkToPermissoes());
-    }   
+        CollectionModel<PermissaoModel> collectionModel 
+            = RepresentationModelAssembler.super.toCollectionModel(entities);
+
+        if (foodSecurity.podeConsultarUsuariosGruposPermissoes()) {
+            collectionModel.add(foodLinks.linkToPermissoes());
+        }
+        
+        return collectionModel;            
+    }  
 }
 
 

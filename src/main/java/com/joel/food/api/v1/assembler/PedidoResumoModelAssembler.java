@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.joel.food.api.v1.FoodLinks;
 import com.joel.food.api.v1.controller.PedidoController;
 import com.joel.food.api.v1.model.PedidoResumoModel;
+import com.joel.food.core.security.FoodSecurity;
 import com.joel.food.domain.model.Pedido;
 
 @Component
@@ -19,6 +20,9 @@ public class PedidoResumoModelAssembler
 	
 	@Autowired
 	private FoodLinks foodLinks;
+	
+	@Autowired
+	private FoodSecurity foodSecurity;
 
 	public PedidoResumoModelAssembler() {
 		super(PedidoController.class, PedidoResumoModel.class);
@@ -26,16 +30,23 @@ public class PedidoResumoModelAssembler
 
 	@Override
 	public PedidoResumoModel toModel(Pedido pedido) {
-		PedidoResumoModel pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
-		modelMapper.map(pedido, pedidoModel);
+	    PedidoResumoModel pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
+	    modelMapper.map(pedido, pedidoModel);
+	    
+	    if (foodSecurity.podePesquisarPedidos()) {
+	        pedidoModel.add(foodLinks.linkToPedidos("pedidos"));
+	    }
+	    
+	    if (foodSecurity.podeConsultarRestaurantes()) {
+	        pedidoModel.getRestaurante().add(
+	                foodLinks.linkToRestaurante(pedido.getRestaurante().getId()));
+	    }
 
-		pedidoModel.add(foodLinks.linkToPedidos("pedidos"));
-
-		pedidoModel.getRestaurante().add(foodLinks.linkToRestaurante(pedido.getRestaurante().getId()));
-
-		pedidoModel.getCliente().add(foodLinks.linkToUsuario(pedido.getCliente().getId()));
-
-		return pedidoModel;
+	    if (foodSecurity.podeConsultarUsuariosGruposPermissoes()) {
+	        pedidoModel.getCliente().add(foodLinks.linkToUsuario(pedido.getCliente().getId()));
+	    }
+	    
+	    return pedidoModel;
 	}
 
 }

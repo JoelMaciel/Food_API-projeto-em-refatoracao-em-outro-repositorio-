@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.joel.food.api.v1.FoodLinks;
 import com.joel.food.api.v1.controller.RestauranteController;
 import com.joel.food.api.v1.model.RestauranteApenasNomeModel;
+import com.joel.food.core.security.FoodSecurity;
 import com.joel.food.domain.model.Restaurante;
 
 @Component
@@ -21,6 +22,9 @@ public class RestauranteApenasNomeModelAssembler
     @Autowired
     private FoodLinks foodLinks;
     
+    @Autowired
+    private FoodSecurity foodSecurity;
+    
     public RestauranteApenasNomeModelAssembler() {
         super(RestauranteController.class, RestauranteApenasNomeModel.class);
     }
@@ -32,14 +36,21 @@ public class RestauranteApenasNomeModelAssembler
         
         modelMapper.map(restaurante, restauranteModel);
         
-        restauranteModel.add(foodLinks.linkToRestaurantes("restaurantes"));
+        if (foodSecurity.podeConsultarRestaurantes()) {
+            restauranteModel.add(foodLinks.linkToRestaurantes("restaurantes"));
+        }
         
         return restauranteModel;
     }
-    
+
     @Override
     public CollectionModel<RestauranteApenasNomeModel> toCollectionModel(Iterable<? extends Restaurante> entities) {
-        return super.toCollectionModel(entities)
-                .add(foodLinks.linkToRestaurantes());
-    }   
+        CollectionModel<RestauranteApenasNomeModel> collectionModel = super.toCollectionModel(entities);
+        
+        if (foodSecurity.podeConsultarRestaurantes()) {
+            collectionModel.add(foodLinks.linkToRestaurantes());
+        }
+                
+        return collectionModel;
+    } 
 }
