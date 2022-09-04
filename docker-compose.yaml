@@ -14,13 +14,40 @@ services:
     networks:
       - food-network
 
+  food-redis:
+    image: redis:6.2.1-alpine
+    networks:
+      - food-network
+
   food-api:
     image: food-api
+    command:
+      [
+        "/wait-for-it.sh",
+        "food-mysql:3306",
+        "-t",
+        "30",
+        "--",
+        "java",
+        "-jar",
+        "api.jar"
+      ]
     environment:
       DB_HOST: food-mysql
-    ports:
-      - "8080:8080"
+      SPRING_SESION_STORE_TYPE: redis
+      SPRING_REDIS_HOST:  food-redis
+      
     networks:
       - food-network
     depends_on:
       - food-mysql
+
+  food-proxy:
+    build: ./nginx
+    image: food-proxy
+    ports:
+      - "80:80"
+    networks:
+      - food-network
+    depends_on:
+      - food-api
